@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { MessageCircle } from "lucide-react";
-import { requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
-import { getPublicSettings } from "@/lib/catalog";
+import { requireStaff } from "@/server/auth";
+import { listCustomers } from "@/server/services/customers";
+import { getPublicSettings } from "@/server/services/settings";
 import { formatRWF, whatsappLink } from "@/lib/utils";
 import { NewCustomerForm } from "@/components/admin/CustomerForms";
 import { Badge, Card, Input, PageTitle, Stat, buttonClass } from "@/components/ui";
@@ -12,12 +12,8 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
   await requireStaff(["owner", "manager", "cashier"]);
   const { q, debt } = await searchParams;
   const [t, s] = await Promise.all([getTranslations(), getPublicSettings()]);
-  const supabase = await createClient();
-  let query = supabase.from("customers").select("*").order("balance", { ascending: false }).order("name").limit(300);
-  if (q) query = query.or(`name.ilike.%${q.replace(/[,()%]/g, "")}%,phone.ilike.%${q.replace(/[,()%]/g, "")}%`);
-  if (debt) query = query.gt("balance", 0);
-  const { data: customers } = await query;
-  const owed = (customers ?? []).reduce((sum, c) => sum + c.balance, 0);
+  const customers = await listCustomers({ q, withDebt: !!debt });
+  const owed = customers.reduce((sum, c) => sum + c.balance, 0);
 
   return (
     <div className="grid gap-6">

@@ -1,34 +1,31 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
-import { requireStaff } from "@/lib/auth";
-import { dbError } from "@/lib/utils";
+import { requireStaff } from "@/server/auth";
+import * as orders from "@/server/services/orders";
+import { findCustomerIdByPhone } from "@/server/services/customers";
 import { completeSale } from "./sales";
 import { createCustomer } from "./customers";
 import type { ActionResult, OrderStatus, PaymentMethod } from "@/types";
 
 export async function setOrderStatus(orderId: string, status: OrderStatus) {
   await requireStaff(["owner", "manager", "cashier"]);
-  const supabase = await createClient();
   if (status === "completed") return; // use completeOrder so the sale and stock are recorded
-  await supabase.from("orders").update({ status, updated_at: new Date().toISOString() }).eq("id", orderId).is("sale_id", null);
+  await orders.setOrderStatus(orderId, status);
   revalidatePath("/admin/orders", "layout");
 }
 
 export async function confirmPayment(orderId: string) {
   await requireStaff(["owner", "manager", "cashier"]);
-  const supabase = await createClient();
-  await supabase.from("orders").update({ payment_status: "confirmed", updated_at: new Date().toISOString() }).eq("id", orderId);
+  await orders.confirmPayment(orderId);
   revalidatePath(`/admin/orders/${orderId}`);
 }
 
 /** Staff set the delivery fee for the customer's location. The database recalculates the total. */
 export async function setDeliveryFee(orderId: string, fee: number): Promise<ActionResult> {
   await requireStaff(["owner", "manager", "cashier"]);
-  const supabase = await createClient();
-  const { error } = await supabase.rpc("set_delivery_fee", { p_order_id: orderId, p_fee: Math.max(0, Math.round(fee)) });
-  if (error) return { ok: false, error: dbError(error) };
+  const res = await orders.setDeliveryFee(orderId, Math.max(0, Math.round(fee)));
+  if (!res.ok) return res;
   revalidatePath("/admin/orders", "layout");
   return { ok: true };
 }
@@ -43,17 +40,15 @@ export async function completeOrder(
   input: { method: PaymentMethod; amountPaid: number; reference: string }
 ): Promise<ActionResult> {
   await requireStaff(["owner", "manager", "cashier"]);
-  const supabase = await createClient();
-  const { data: order } = await supabase.from("orders").select("*, order_items(unit_id, quantity)").eq("id", orderId).single();
+  const order = await orders.getOrder(orderId);
   if (!order) return { ok: false, error: "Order not found" };
   if (order.fulfilment === "delivery" && !order.delivery_fee_set) return { ok: false, error: "Set the delivery fee before completing this order" };
 
   const amountPaid = Math.max(0, Math.min(order.total, Math.round(input.amountPaid)));
   let customerId: string | null = null;
   if (amountPaid < order.total) {
-    const { data: existing } = await supabase.from("customers").select("id").eq("phone", order.customer_phone).maybeSingle();
-    if (existing) customerId = existing.id;
-    else {
+    customerId = await findCustomerIdByPhone(order.customer_phone);
+    if (!customerId) {
       const created = await createCustomer({ name: order.customer_name, phone: order.customer_phone, type: "retail" });
       if (!created.ok || !created.customer) return { ok: false, error: created.error };
       customerId = created.customer.id;

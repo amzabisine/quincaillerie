@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
-import { getSalesReport, startOfTodayKigali } from "@/lib/reports";
+import { requireStaff } from "@/server/auth";
+import { getSalesReport } from "@/server/services/reports";
+import { listNewOrders } from "@/server/services/orders";
+import { listLowStock } from "@/server/services/products";
+import { startOfTodayKigali } from "@/lib/dates";
 import { formatQty, formatRWF } from "@/lib/utils";
 import { Card, PageTitle, Stat } from "@/components/ui";
 
@@ -13,13 +15,11 @@ export default async function Dashboard() {
   if (staff.role === "storekeeper") redirect("/admin/stock");
 
   const t = await getTranslations();
-  const supabase = await createClient();
-  const [report, { data: orders }, { data: products }] = await Promise.all([
+  const [report, orders, low] = await Promise.all([
     getSalesReport(startOfTodayKigali(), new Date()),
-    supabase.from("orders").select("id, code, customer_name, total, created_at").eq("status", "new").order("created_at").limit(8),
-    supabase.from("products").select("id, name, stock, low_stock_level, base_unit").eq("is_active", true).order("stock").limit(200),
+    listNewOrders(8),
+    listLowStock(10),
   ]);
-  const low = (products ?? []).filter((p) => Number(p.stock) <= Number(p.low_stock_level)).slice(0, 10);
 
   return (
     <div className="grid gap-8">

@@ -1,28 +1,23 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { requireStaff } from "@/server/auth";
+import { getCustomerAccount } from "@/server/services/customers";
 import { formatRWF } from "@/lib/utils";
 import { DebtPaymentForm, EditCustomerForm } from "@/components/admin/CustomerForms";
 import { Card, PageTitle, Stat } from "@/components/ui";
-import type { Customer } from "@/types";
 
 export default async function CustomerPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const staff = await requireStaff(["owner", "manager", "cashier"]);
   const t = await getTranslations();
-  const supabase = await createClient();
-  const [{ data: customer }, { data: sales }, { data: payments }] = await Promise.all([
-    supabase.from("customers").select("*").eq("id", id).maybeSingle(),
-    supabase.from("sales").select("id, number, total, credit_amount, status, created_at").eq("customer_id", id).order("created_at", { ascending: false }).limit(50),
-    supabase.from("payments").select("*").eq("customer_id", id).eq("kind", "debt_payment").order("created_at", { ascending: false }).limit(50),
-  ]);
-  if (!customer) notFound();
+  const account = await getCustomerAccount(id);
+  if (!account) notFound();
+  const { customer, sales, payments } = account;
 
   const history = [
-    ...(sales ?? []).map((s) => ({ date: s.created_at, label: `${t("customers.purchase")} #${s.number}`, href: `/admin/sales/${s.id}`, amount: s.credit_amount, sign: "+", voided: s.status === "voided" })),
-    ...(payments ?? []).map((p) => ({ date: p.created_at, label: `${t("customers.debtPayment")} · ${t(`methods.${p.method}`)}`, href: null, amount: p.amount, sign: "-", voided: false })),
+    ...sales.map((s) => ({ date: s.created_at, label: `${t("customers.purchase")} #${s.number}`, href: `/admin/sales/${s.id}`, amount: s.credit_amount, sign: "+", voided: s.status === "voided" })),
+    ...payments.map((p) => ({ date: p.created_at, label: `${t("customers.debtPayment")} · ${t(`methods.${p.method}`)}`, href: null, amount: p.amount, sign: "-", voided: false })),
   ].sort((a, b) => b.date.localeCompare(a.date));
 
   return (
@@ -33,8 +28,8 @@ export default async function CustomerPage({ params }: { params: Promise<{ id: s
         <Stat label={t("customers.creditLimit")} value={customer.credit_limit ? formatRWF(customer.credit_limit) : "∞"} />
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
-        {customer.balance > 0 && <Card><h2 className="font-bold mb-3">{t("customers.receivePayment")}</h2><DebtPaymentForm customer={customer as Customer} /></Card>}
-        {staff.role !== "cashier" && <Card><EditCustomerForm customer={customer as Customer} /></Card>}
+        {customer.balance > 0 && <Card><h2 className="font-bold mb-3">{t("customers.receivePayment")}</h2><DebtPaymentForm customer={customer} /></Card>}
+        {staff.role !== "cashier" && <Card><EditCustomerForm customer={customer} /></Card>}
       </div>
       <section>
         <h2 className="text-lg font-bold mb-3">{t("customers.history")}</h2>

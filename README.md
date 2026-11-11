@@ -37,6 +37,22 @@ Next.js 16, React 19, TypeScript, Tailwind CSS 4, Supabase (PostgreSQL, Auth, St
 3. Add products in **Products** (with every selling unit and price), then enter the current quantities in **Stock** using "Physical count" or "Stock in".
 4. Delete the demo accounts and data before going live if you used the seed.
 
+## Project structure
+
+```
+src/
+  app/          Frontend: pages (store, admin, login)
+  components/   Frontend: UI pieces
+  server/       Backend: database access, login, server actions (never sent to the browser)
+    db/           Supabase connections
+    services/     Reads and writes, one file per area (products, sales, orders...)
+    actions/      What forms and buttons call
+  lib/          Shared helpers (money and phone formatting, units, permissions)
+supabase/       Database: tables, security rules, business functions (migrations)
+```
+
+`npm run check:layers` checks that pages never talk to the database directly. Details in `CLAUDE.md`.
+
 ## Printing receipts
 
 The receipt page is formatted for 80 mm thermal printers (it also works on 58 mm and A4). Connect the printer to the computer or tablet and use the browser's print dialog.

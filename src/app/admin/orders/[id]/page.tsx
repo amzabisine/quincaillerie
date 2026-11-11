@@ -2,9 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { MessageCircle, Phone } from "lucide-react";
-import { requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
-import { confirmPayment, setOrderStatus } from "@/app/actions/orders";
+import { requireStaff } from "@/server/auth";
+import { getOrder } from "@/server/services/orders";
+import { getShopSettings } from "@/server/services/settings";
+import { confirmPayment, setOrderStatus } from "@/server/actions/orders";
 import { formatQty, formatRWF, whatsappLink } from "@/lib/utils";
 import { CompleteOrderForm } from "@/components/admin/CompleteOrderForm";
 import { DeliveryFeeForm } from "@/components/admin/DeliveryFeeForm";
@@ -15,11 +16,7 @@ export default async function OrderAdminPage({ params }: { params: Promise<{ id:
   const { id } = await params;
   await requireStaff(["owner", "manager", "cashier"]);
   const t = await getTranslations();
-  const supabase = await createClient();
-  const [{ data: o }, { data: settings }] = await Promise.all([
-    supabase.from("orders").select("*, order_items(*)").eq("id", id).maybeSingle(),
-    supabase.from("settings").select("shop_name").single(),
-  ]);
+  const [o, settings] = await Promise.all([getOrder(id), getShopSettings()]);
   if (!o) notFound();
   const open = !o.sale_id && o.status !== "cancelled";
   const isDelivery = o.fulfilment === "delivery";

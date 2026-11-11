@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { MessageCircle, Phone } from "lucide-react";
-import { getCatalog, getCategories, getPublicSettings } from "@/lib/catalog";
+import { getCatalog, getCategories } from "@/server/services/catalog";
+import { getPublicSettings } from "@/server/services/settings";
 import { categoryName, whatsappLink } from "@/lib/utils";
 import { ProductCard } from "@/components/store/ProductCard";
 import { CategoryIcon } from "@/components/CategoryIcon";

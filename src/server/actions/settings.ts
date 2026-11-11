@@ -1,16 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
-import { requireStaff } from "@/lib/auth";
-import { dbError, normalizeRwandaPhone } from "@/lib/utils";
+import { requireStaff } from "@/server/auth";
+import { updateSettings } from "@/server/services/settings";
+import { normalizeRwandaPhone } from "@/lib/utils";
 import type { ActionResult } from "@/types";
 
 export async function saveSettings(_: ActionResult | null, f: FormData): Promise<ActionResult> {
   await requireStaff(["owner", "manager"]);
   const str = (k: string) => String(f.get(k) || "").trim();
-  const supabase = await createClient();
-  const { error } = await supabase.from("settings").update({
+  const res = await updateSettings({
     shop_name: str("shop_name") || "Quincaillerie",
     tagline: str("tagline"),
     phone: normalizeRwandaPhone(str("phone")) ?? (str("phone") || null),
@@ -25,9 +24,8 @@ export async function saveSettings(_: ActionResult | null, f: FormData): Promise
     delivery_enabled: f.get("delivery_enabled") === "on",
     delivery_note: str("delivery_note"),
     receipt_footer: str("receipt_footer"),
-    updated_at: new Date().toISOString(),
-  }).eq("id", 1);
-  if (error) return { ok: false, error: dbError(error) };
+  });
+  if (!res.ok) return res;
   revalidatePath("/", "layout");
   return { ok: true };
 }

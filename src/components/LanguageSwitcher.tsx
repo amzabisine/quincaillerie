@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useTransition } from "react";
 import { Languages } from "lucide-react";
-import { setLocale } from "@/app/actions/locale";
+import { setLocale } from "@/server/actions/locale";
 import { cn } from "@/lib/utils";
 import { locales, localeNames, type Locale } from "@/i18n/config";
 

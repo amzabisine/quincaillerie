@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { adjustStock, stockIn } from "@/app/actions/stock";
+import { adjustStock, stockIn } from "@/server/actions/stock";
 import { formatQty } from "@/lib/utils";
 import { Button, Card, Field, Input, Notice, Select } from "@/components/ui";
 import type { Product } from "@/types";

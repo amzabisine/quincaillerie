@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import { canSeeProfit, requireStaff } from "@/lib/auth";
-import { getCategories } from "@/lib/catalog";
+import { requireStaff } from "@/server/auth";
+import { canSeeProfit } from "@/lib/permissions";
+import { getCategories } from "@/server/services/catalog";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { PageTitle } from "@/components/ui";
 

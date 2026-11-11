@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Package, Plus, Trash2 } from "lucide-react";
-import { saveProduct } from "@/app/actions/products";
+import { saveProduct } from "@/server/actions/products";
 import { UNITS } from "@/lib/units";
 import { categoryName, formatRWF } from "@/lib/utils";
 import { Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";

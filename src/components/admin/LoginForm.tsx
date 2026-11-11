@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
-import { login } from "@/app/actions/auth";
+import { login } from "@/server/actions/auth";
 import { Button, Field, Input, Notice } from "@/components/ui";
 
 export function LoginForm() {

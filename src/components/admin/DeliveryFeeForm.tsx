@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { setDeliveryFee } from "@/app/actions/orders";
+import { setDeliveryFee } from "@/server/actions/orders";
 import { Button, Field, Input, Notice } from "@/components/ui";
 
 /** Staff enter the delivery fee for the customer's location (0 = free delivery). */

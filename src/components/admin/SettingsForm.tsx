@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
-import { saveSettings } from "@/app/actions/settings";
+import { saveSettings } from "@/server/actions/settings";
 import { Button, Card, Field, Input, Notice } from "@/components/ui";
 import type { Settings } from "@/types";
 

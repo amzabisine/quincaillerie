@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { createStaff } from "@/app/actions/staff";
+import { createStaff } from "@/server/actions/staff";
 import { Button, Field, Input, Notice, Select } from "@/components/ui";
 
 export function StaffForm() {

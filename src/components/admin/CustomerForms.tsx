@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { createCustomerForm, receiveDebtPayment, updateCustomer } from "@/app/actions/customers";
+import { createCustomerForm, receiveDebtPayment, updateCustomer } from "@/server/actions/customers";
 import { Button, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import type { Customer } from "@/types";
 

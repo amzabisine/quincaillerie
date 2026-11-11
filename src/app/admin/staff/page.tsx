@@ -1,21 +1,20 @@
 import { getTranslations } from "next-intl/server";
-import { requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
-import { updateStaff } from "@/app/actions/staff";
+import { requireStaff } from "@/server/auth";
+import { listStaff } from "@/server/services/staff";
+import { updateStaff } from "@/server/actions/staff";
 import { StaffForm } from "@/components/admin/StaffForm";
 import { Badge, Card, PageTitle, buttonClass } from "@/components/ui";
 
 export default async function StaffPage() {
   const me = await requireStaff(["owner"]);
   const t = await getTranslations();
-  const supabase = await createClient();
-  const { data: staff } = await supabase.from("profiles").select("*").order("created_at");
+  const staff = await listStaff();
 
   return (
     <div className="grid gap-6 max-w-4xl">
       <PageTitle>{t("staff.title")}</PageTitle>
       <ul className="divide-y divide-steel-950/8 rounded-lg bg-white ring-1 ring-steel-950/8 text-sm">
-        {staff?.map((s) => (
+        {staff.map((s) => (
           <li key={s.id} className="flex flex-wrap items-center gap-3 p-3">
             <span className="font-semibold">{s.full_name || "—"}</span>
             <span className="text-steel-600">{s.phone}</span>

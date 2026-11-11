@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { Plus } from "lucide-react";
-import { canSeeProfit, requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
-import { getCategories } from "@/lib/catalog";
+import { requireStaff } from "@/server/auth";
+import { canSeeProfit } from "@/lib/permissions";
+import { listProducts } from "@/server/services/products";
+import { getCategories } from "@/server/services/catalog";
 import { categoryName, cn, formatQty, formatRWF } from "@/lib/utils";
 import { Badge, Card, Input, PageTitle, buttonClass } from "@/components/ui";
 
@@ -11,11 +12,7 @@ export default async function ProductsAdmin({ searchParams }: { searchParams: Pr
   const staff = await requireStaff(["owner", "manager", "storekeeper"]);
   const { q, low } = await searchParams;
   const [t, locale, categories] = await Promise.all([getTranslations(), getLocale(), getCategories()]);
-  const supabase = await createClient();
-  let query = supabase.from("products").select("*, product_units(*)").order("name").limit(500);
-  if (q) query = query.ilike("name", `%${q}%`);
-  const { data } = await query;
-  const products = (data ?? []).filter((p) => !low || Number(p.stock) <= Number(p.low_stock_level));
+  const products = (await listProducts({ q })).filter((p) => !low || Number(p.stock) <= Number(p.low_stock_level));
   const showCost = canSeeProfit(staff.role);
 
   return (

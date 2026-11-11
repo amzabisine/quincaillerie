@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
-import { requireStaff } from "@/lib/auth";
-import { dbError, normalizeRwandaPhone } from "@/lib/utils";
+import { requireStaff } from "@/server/auth";
+import * as customers from "@/server/services/customers";
+import { normalizeRwandaPhone } from "@/lib/utils";
 import type { ActionResult, Customer } from "@/types";
 
 export async function createCustomer(input: { name: string; phone: string; type: "retail" | "wholesale"; creditLimit?: number })
@@ -11,16 +11,15 @@ export async function createCustomer(input: { name: string; phone: string; type:
   await requireStaff(["owner", "manager", "cashier"]);
   const name = input.name.trim();
   if (!name) return { ok: false, error: "Name is required" };
-  const supabase = await createClient();
-  const { data, error } = await supabase.from("customers").insert({
+  const res = await customers.createCustomer({
     name,
     phone: normalizeRwandaPhone(input.phone) ?? (input.phone.trim() || null),
     type: input.type,
     credit_limit: Math.max(0, Math.round(input.creditLimit ?? 0)),
-  }).select().single();
-  if (error) return { ok: false, error: dbError(error) };
+  });
+  if (!res.ok) return res;
   revalidatePath("/admin/customers");
-  return { ok: true, customer: data as Customer };
+  return { ok: true, customer: res.data };
 }
 
 export async function createCustomerForm(_: ActionResult | null, formData: FormData): Promise<ActionResult> {
@@ -34,29 +33,27 @@ export async function createCustomerForm(_: ActionResult | null, formData: FormD
 
 export async function updateCustomer(id: string, _: ActionResult | null, formData: FormData): Promise<ActionResult> {
   await requireStaff(["owner", "manager"]);
-  const supabase = await createClient();
-  const { error } = await supabase.from("customers").update({
+  const res = await customers.updateCustomer(id, {
     name: String(formData.get("name") || "").trim(),
     phone: normalizeRwandaPhone(String(formData.get("phone") || "")) ?? null,
     type: formData.get("type") === "wholesale" ? "wholesale" : "retail",
     credit_limit: Math.max(0, Number(formData.get("credit_limit") || 0)),
     notes: String(formData.get("notes") || ""),
-  }).eq("id", id);
-  if (error) return { ok: false, error: dbError(error) };
+  });
+  if (!res.ok) return res;
   revalidatePath(`/admin/customers/${id}`);
   return { ok: true };
 }
 
 export async function receiveDebtPayment(customerId: string, _: ActionResult | null, formData: FormData): Promise<ActionResult> {
   await requireStaff(["owner", "manager", "cashier"]);
-  const supabase = await createClient();
-  const { error } = await supabase.rpc("receive_debt_payment", {
-    p_customer_id: customerId,
-    p_amount: Math.round(Number(formData.get("amount") || 0)),
-    p_method: String(formData.get("method") || "cash"),
-    p_reference: String(formData.get("reference") || ""),
+  const res = await customers.receiveDebtPayment({
+    customerId,
+    amount: Math.round(Number(formData.get("amount") || 0)),
+    method: String(formData.get("method") || "cash"),
+    reference: String(formData.get("reference") || ""),
   });
-  if (error) return { ok: false, error: dbError(error) };
+  if (!res.ok) return res;
   revalidatePath(`/admin/customers/${customerId}`);
   revalidatePath("/admin/customers");
   return { ok: true };
