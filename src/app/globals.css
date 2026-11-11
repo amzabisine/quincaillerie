@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/*
+  Palette from the shop floor:
+  steel   = iron rods and roofing sheets (primary, text)
+  cement  = page background
+  signal  = safety yellow, used for the main store action and the ruler strip
+*/
+@theme {
+  --color-steel-950: #15202a;
+  --color-steel-800: #243444;
+  --color-steel-600: #46586a;
+  --color-steel-400: #8796a4;
+  --color-steel-100: #e2e7eb;
+  --color-steel-50: #f2f4f6;
+  --color-cement: #f0f1ee;
+  --color-signal: #f4b400;
+  --color-signal-50: #fdf4d9;
+  --color-ok: #2e7a4e;
+  --color-ok-50: #e7f3ec;
+  --color-danger: #b4382f;
+  --color-danger-50: #fbecea;
+
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+html { color: var(--color-steel-950); background: var(--color-cement); }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--font-display); font-stretch: 85%; letter-spacing: -0.01em; }
+
+:focus-visible { outline: 2px solid var(--color-steel-600); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Tape-measure strip under the store headline */
+.ruler {
+  height: 14px;
+  background:
+    repeating-linear-gradient(90deg, var(--color-steel-950) 0 2px, transparent 2px 40px) bottom / 100% 14px no-repeat,
+    repeating-linear-gradient(90deg, var(--color-steel-950) 0 1px, transparent 1px 8px) bottom / 100% 7px no-repeat,
+    var(--color-signal);
+}
+
+/* Receipts print on 58mm / 80mm thermal printers */
+@media print {
+  body * { visibility: hidden; }
+  .receipt, .receipt * { visibility: visible; }
+  .receipt { position: absolute; inset: 0 auto auto 0; width: 76mm; padding: 0; box-shadow: none; font-size: 12px; }
+  .no-print { display: none !important; }
+  @page { margin: 2mm; }
+}
