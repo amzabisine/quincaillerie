@@ -1,6 +1,6 @@
 # Quincaillerie management system
 
-Online store and shop management for one hardware store, starting in Rubavu.
+Online store and shop management for one hardware store, starting in BUKAVU.
 
 - **Online store** (public): customers browse products, add to cart, and order for pickup or delivery. They pay by MTN MoMo or Airtel Money merchant code (entering the transaction ID), or at pickup or delivery. No account needed; they track the order with a code and their phone number.
 - **Counter (POS)**: fast product search and barcode scanning, retail or wholesale price per customer, discount, payment by cash, MoMo, Airtel, bank, or credit, and printed or WhatsApp receipts.
