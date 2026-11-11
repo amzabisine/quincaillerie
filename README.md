@@ -28,7 +28,7 @@ Next.js 16, React 19, TypeScript, Tailwind CSS 4, Supabase (PostgreSQL, Auth, St
    | store@quincaillerie.rw | Storekeeper |
 
    Without the seed: the **first account** created in Supabase > Authentication > Users becomes the owner automatically.
-5. **Run**: `npm run dev`, then open http://localhost:3000 (store) and http://localhost:3000/login (staff).
+5. **Run**: `npm run dev`, then open http://localhost:3001 (store) and http://localhost:3000/login (staff).
 
 ## First steps for the real shop
 
