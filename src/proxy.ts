@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/proxy";
+import { updateSession } from "@/server/db/session";
 
 // Next.js 16 "proxy" (formerly middleware): runs before every matched request.
 export async function proxy(request: NextRequest) {

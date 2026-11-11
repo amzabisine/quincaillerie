@@ -1,7 +1,8 @@
+import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-/** Supabase client for Server Components, Server Actions and Route Handlers. */
+/** Supabase client for the backend, acting as the logged-in user (database security rules apply). */
 export async function createClient() {
   const cookieStore = await cookies();
   return createServerClient(

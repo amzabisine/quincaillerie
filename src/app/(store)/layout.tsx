@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { MapPin, MessageCircle, Phone, Search } from "lucide-react";
-import { getPublicSettings } from "@/lib/catalog";
+import { getPublicSettings } from "@/server/services/settings";
 import { whatsappLink } from "@/lib/utils";
 import { CartProvider } from "@/components/store/CartProvider";
 import { CartButton } from "@/components/store/CartButton";

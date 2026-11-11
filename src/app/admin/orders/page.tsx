@@ -1,21 +1,16 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { requireStaff } from "@/server/auth";
+import { listOrders } from "@/server/services/orders";
 import { cn, formatRWF } from "@/lib/utils";
 import { OrdersLive } from "@/components/admin/OrdersLive";
 import { Badge, Card, PageTitle } from "@/components/ui";
-
-const OPEN = ["new", "confirmed", "ready", "out_for_delivery"];
 
 export default async function OrdersPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   await requireStaff(["owner", "manager", "cashier"]);
   const tab = (await searchParams).tab === "done" ? "done" : "open";
   const t = await getTranslations();
-  const supabase = await createClient();
-  let q = supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(100);
-  q = tab === "open" ? q.in("status", OPEN) : q.in("status", ["completed", "cancelled"]);
-  const { data: orders } = await q;
+  const orders = await listOrders(tab);
 
   return (
     <div>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Package, Trash2 } from "lucide-react";
-import { placeOrder } from "@/app/actions/store";
+import { placeOrder } from "@/server/actions/store";
 import { cn, formatRWF } from "@/lib/utils";
 import { Button, Field, Input, Notice, Textarea, buttonClass } from "@/components/ui";
 import { useCart } from "./CartProvider";

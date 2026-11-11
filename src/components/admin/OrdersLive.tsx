@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase-browser";
 
 /** Refreshes the page when a new online order arrives, and plays a short beep. */
 export function OrdersLive() {

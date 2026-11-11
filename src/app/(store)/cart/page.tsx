@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { getPublicSettings } from "@/lib/catalog";
+import { getPublicSettings } from "@/server/services/settings";
 import { Checkout } from "@/components/store/Checkout";
 
 export default async function CartPage() {

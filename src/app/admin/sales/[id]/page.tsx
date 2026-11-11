@@ -2,9 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { MessageCircle } from "lucide-react";
-import { requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
-import { voidSale } from "@/app/actions/sales";
+import { requireStaff } from "@/server/auth";
+import { getSale } from "@/server/services/sales";
+import { getShopSettings } from "@/server/services/settings";
+import { voidSale } from "@/server/actions/sales";
 import { formatQty, formatRWF, whatsappLink } from "@/lib/utils";
 import { PrintButton } from "@/components/admin/AutoPrint";
 import { Badge, Input, buttonClass } from "@/components/ui";
@@ -14,11 +15,7 @@ export default async function SalePage({ params, searchParams }: { params: Promi
   const { print } = await searchParams;
   const staff = await requireStaff(["owner", "manager", "cashier"]);
   const t = await getTranslations();
-  const supabase = await createClient();
-  const [{ data: sale }, { data: settings }] = await Promise.all([
-    supabase.from("sales").select("*, sale_items(*), payments(*), cashier:profiles(full_name), customer:customers(name, phone, balance)").eq("id", id).maybeSingle(),
-    supabase.from("settings").select("*").single(),
-  ]);
+  const [sale, settings] = await Promise.all([getSale(id), getShopSettings()]);
   if (!sale) notFound();
 
   const message = t("sales.receiptMessage", { number: sale.number, shop: settings?.shop_name ?? "", total: formatRWF(sale.total) })

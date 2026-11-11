@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { completeOrder } from "@/app/actions/orders";
+import { completeOrder } from "@/server/actions/orders";
 import { formatRWF } from "@/lib/utils";
 import { Button, Notice } from "@/components/ui";
 import { PaymentOptions, computePayment, initialPayment, type PaymentState } from "./PaymentOptions";

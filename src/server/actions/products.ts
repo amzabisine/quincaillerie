@@ -2,10 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { canSeeProfit, requireStaff } from "@/lib/auth";
+import { requireStaff } from "@/server/auth";
+import * as products from "@/server/services/products";
+import { canSeeProfit } from "@/lib/permissions";
 import { UNITS } from "@/lib/units";
-import { dbError } from "@/lib/utils";
 import type { ActionResult } from "@/types";
 
 interface UnitRow {
@@ -22,7 +22,6 @@ interface UnitRow {
 /** Create or update a product with all its selling units. */
 export async function saveProduct(productId: string | null, _: ActionResult | null, formData: FormData): Promise<ActionResult> {
   const staff = await requireStaff(["owner", "manager", "storekeeper"]);
-  const supabase = await createClient();
 
   const units = JSON.parse(String(formData.get("units") || "[]")) as UnitRow[];
   const baseUnit = String(formData.get("base_unit"));
@@ -39,13 +38,12 @@ export async function saveProduct(productId: string | null, _: ActionResult | nu
   const file = formData.get("image") as File | null;
   if (file && file.size > 0) {
     if (!file.type.startsWith("image/") || file.size > 4 * 1024 * 1024) return { ok: false, error: "Photo must be an image under 4 MB" };
-    const path = `${crypto.randomUUID()}.${file.name.split(".").pop() || "jpg"}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, file, { contentType: file.type });
-    if (error) return { ok: false, error: dbError(error) };
-    imageUrl = supabase.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+    const uploaded = await products.uploadProductImage(file);
+    if (!uploaded.ok) return uploaded;
+    imageUrl = uploaded.data;
   }
 
-  const product = {
+  const product: products.ProductFields = {
     name: String(formData.get("name") || "").trim(),
     description: String(formData.get("description") || "").trim(),
     category_id: String(formData.get("category_id") || "") || null,
@@ -58,41 +56,21 @@ export async function saveProduct(productId: string | null, _: ActionResult | nu
   };
   if (product.name.length < 2) return { ok: false, error: "Enter a product name" };
 
-  let id = productId;
-  if (id) {
-    const { error } = await supabase.from("products").update({ ...product, updated_at: new Date().toISOString() }).eq("id", id);
-    if (error) return { ok: false, error: dbError(error) };
-  } else {
-    const { data, error } = await supabase.from("products").insert(product).select("id").single();
-    if (error || !data) return { ok: false, error: dbError(error) };
-    id = data.id as string;
-  }
-
-  // Sync units: delete removed ones, update existing, insert new
-  const keepIds = units.filter((u) => u.id).map((u) => u.id!);
-  const del = supabase.from("product_units").delete().eq("product_id", id);
-  const { error: delError } = keepIds.length ? await del.not("id", "in", `(${keepIds.join(",")})`) : await del;
-  if (delError) return { ok: false, error: dbError(delError) };
-
-  for (const u of units) {
-    const row = {
-      product_id: id, unit: u.unit, factor: u.factor, retail_price: Math.round(u.retail_price),
-      wholesale_price: u.wholesale_price ? Math.round(u.wholesale_price) : null,
-      barcode: u.barcode?.trim() || null, is_default: u.is_default, show_online: u.show_online,
-    };
-    const { error } = u.id
-      ? await supabase.from("product_units").update(row).eq("id", u.id)
-      : await supabase.from("product_units").insert(row);
-    if (error) return { ok: false, error: dbError(error) };
-  }
+  const saved = await products.saveProduct(productId, product, units.map((u) => ({
+    id: u.id, unit: u.unit, factor: u.factor, retail_price: Math.round(u.retail_price),
+    wholesale_price: u.wholesale_price ? Math.round(u.wholesale_price) : null,
+    barcode: u.barcode?.trim() || null, is_default: u.is_default, show_online: u.show_online,
+  })));
+  if (!saved.ok) return saved;
+  const id = saved.data;
 
   // Buying price (per base unit): owner and manager only, sent only when it was changed.
   const cost = formData.get("cost_price");
   if (cost !== null && canSeeProfit(staff.role)) {
     const value = Number(cost);
     if (!Number.isFinite(value) || value < 0) return { ok: false, error: "Invalid buying price" };
-    const { error } = await supabase.rpc("set_cost_price", { p_product_id: id, p_cost: value });
-    if (error) return { ok: false, error: dbError(error) };
+    const res = await products.setCostPrice(id, value);
+    if (!res.ok) return res;
   }
 
   revalidatePath("/admin/products");

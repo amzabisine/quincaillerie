@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { getPublicSettings } from "@/lib/catalog";
+import { getPublicSettings } from "@/server/services/settings";
 import { LoginForm } from "@/components/admin/LoginForm";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 

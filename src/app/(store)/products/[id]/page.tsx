@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { MessageCircle, Package } from "lucide-react";
-import { getCatalog, getPublicSettings } from "@/lib/catalog";
+import { getCatalog } from "@/server/services/catalog";
+import { getPublicSettings } from "@/server/services/settings";
 import { formatRWF, whatsappLink } from "@/lib/utils";
 import { AddToCart } from "@/components/store/AddToCart";
 import { Badge, buttonClass } from "@/components/ui";

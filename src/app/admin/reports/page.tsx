@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { requireStaff } from "@/lib/auth";
-import { getSalesReport, startOfTodayKigali } from "@/lib/reports";
+import { requireStaff } from "@/server/auth";
+import { getSalesReport } from "@/server/services/reports";
+import { startOfTodayKigali } from "@/lib/dates";
 import { formatQty, formatRWF } from "@/lib/utils";
 import { Card, Input, PageTitle, Stat, buttonClass } from "@/components/ui";
 

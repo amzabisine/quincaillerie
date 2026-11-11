@@ -1,26 +1,18 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { CheckCircle2 } from "lucide-react";
-import { createClient } from "@/lib/supabase/server";
+import { trackOrder } from "@/server/services/catalog";
 import { formatQty, formatRWF } from "@/lib/utils";
 import { Badge, Notice, buttonClass } from "@/components/ui";
 import type { OrderStatus } from "@/types";
 
 const STEPS: OrderStatus[] = ["new", "confirmed", "ready", "completed"];
 
-interface TrackedOrder {
-  code: string; status: OrderStatus; payment_status: "unpaid" | "claimed" | "confirmed"; fulfilment: "pickup" | "delivery";
-  subtotal: number; delivery_fee: number; delivery_fee_set?: boolean; total: number; created_at: string;
-  items: { name: string; unit: string; quantity: number; line_total: number }[];
-}
-
 export default async function OrderPage({ params, searchParams }: { params: Promise<{ code: string }>; searchParams: Promise<{ phone?: string; new?: string }> }) {
   const { code } = await params;
   const { phone = "", new: isNew } = await searchParams;
   const t = await getTranslations();
-  const supabase = await createClient();
-  const { data } = await supabase.rpc("track_order", { p_code: decodeURIComponent(code), p_phone: phone });
-  const order = data as TrackedOrder | null;
+  const order = await trackOrder(decodeURIComponent(code), phone);
 
   if (!order) {
     return (

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { getCatalog, getCategories } from "@/lib/catalog";
+import { getCatalog, getCategories } from "@/server/services/catalog";
 import { categoryName, cn } from "@/lib/utils";
 import { ProductCard } from "@/components/store/ProductCard";
 

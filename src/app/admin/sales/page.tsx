@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { requireStaff } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { requireStaff } from "@/server/auth";
+import { listSales } from "@/server/services/sales";
 import { formatRWF } from "@/lib/utils";
 import { Badge, Card, PageTitle, buttonClass } from "@/components/ui";
 import { RowLink } from "@/components/admin/RowLink";
@@ -10,11 +10,8 @@ export default async function SalesPage({ searchParams }: { searchParams: Promis
   await requireStaff(["owner", "manager", "cashier"]);
   const page = Math.max(1, Number((await searchParams).page) || 1);
   const t = await getTranslations();
-  const supabase = await createClient();
   const size = 50;
-  const { data: sales } = await supabase
-    .from("sales").select("id, number, channel, customer_name, total, credit_amount, status, created_at, cashier:profiles(full_name)")
-    .order("created_at", { ascending: false }).range((page - 1) * size, page * size - 1);
+  const sales = await listSales(page, size);
 
   return (
     <div>
