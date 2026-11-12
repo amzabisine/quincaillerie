@@ -6,6 +6,7 @@ import { listCustomers } from "@/server/services/customers";
 import { getPublicSettings } from "@/server/services/settings";
 import { formatRWF, whatsappLink } from "@/lib/utils";
 import { NewCustomerForm } from "@/components/admin/CustomerForms";
+import { RowLink } from "@/components/admin/RowLink";
 import { Badge, Card, Input, PageTitle, Stat, buttonClass } from "@/components/ui";
 
 export default async function CustomersPage({ searchParams }: { searchParams: Promise<{ q?: string; debt?: string }> }) {
@@ -26,9 +27,9 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
         <button className={buttonClass("secondary")}>{t("common.search")}</button>
       </form>
       {!customers?.length ? <Card><p className="text-steel-600">{t("customers.none")}</p></Card> : (
-        <ul className="divide-y divide-steel-950/8 rounded-lg bg-white ring-1 ring-steel-950/8">
+        <ul className="divide-y divide-steel-950/8 overflow-hidden rounded-lg bg-white ring-1 ring-steel-950/8">
           {customers.map((c) => (
-            <li key={c.id} className="flex flex-wrap items-center gap-3 p-3 text-sm">
+            <RowLink as="li" key={c.id} href={`/admin/customers/${c.id}`} className="flex flex-wrap items-center gap-3 p-3 text-sm">
               <Link href={`/admin/customers/${c.id}`} className="font-semibold hover:underline">{c.name}</Link>
               <span className="text-steel-600">{c.phone}</span>
               {c.type === "wholesale" && <Badge tone="info">{t("pos.wholesale")}</Badge>}
@@ -39,7 +40,7 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
                   <MessageCircle size={14} aria-hidden /> {t("customers.remind")}
                 </a>
               )}
-            </li>
+            </RowLink>
           ))}
         </ul>
       )}
