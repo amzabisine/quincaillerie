@@ -346,7 +346,20 @@
     "disabled": "Amezimwa",
     "deactivate": "Zima",
     "activate": "Washa",
-    "roleHelp": "Wahasibu wa kaunta wanauza na kupokea malipo. Watunza stoo wanasimamia bidhaa na stoo. Mameneja wanafanya yote na wanaona faida."
+    "roleHelp": "Wahasibu wa kaunta wanauza na kupokea malipo. Watunza stoo wanasimamia bidhaa na stoo. Mameneja wanafanya yote na wanaona faida.",
+    "status": "Hali",
+    "lastLogin": "Aliingia mara ya mwisho",
+    "never": "Hajawahi",
+    "you": "Wewe",
+    "emailHint": "Anwani inayotumika kuingia.",
+    "newPassword": "Nenosiri jipya",
+    "newPasswordHint": "Acha wazi ili kubaki na nenosiri la sasa. Angalau herufi 8.",
+    "canLogin": "Anaweza kuingia (akaunti inatumika)",
+    "lockedHelp": "Wadhifa na hali ya mmiliki haviwezi kubadilishwa.",
+    "delete": "Futa akaunti hii",
+    "deleteHelp": "Ikiwa mtu huyu tayari amerekodi mauzo, malipo au mabadiliko ya stoo, akaunti itazimwa badala ya kufutwa, ili kuhifadhi historia.",
+    "deleteConfirm": "Futa akaunti ya {name}?",
+    "deactivatedInstead": "Mtu huyu tayari ana historia (mauzo, malipo au stoo), kwa hiyo akaunti imezimwa badala ya kufutwa. Hawezi kuingia tena."
   },
   "settings": {
     "title": "Mipangilio ya duka",

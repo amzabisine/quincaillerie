@@ -346,7 +346,20 @@
     "disabled": "Disabled",
     "deactivate": "Disable",
     "activate": "Enable",
-    "roleHelp": "Cashiers sell and receive payments. Storekeepers manage products and stock. Managers do both and see profit."
+    "roleHelp": "Cashiers sell and receive payments. Storekeepers manage products and stock. Managers do both and see profit.",
+    "status": "Status",
+    "lastLogin": "Last login",
+    "never": "Never",
+    "you": "You",
+    "emailHint": "The address used to log in.",
+    "newPassword": "New password",
+    "newPasswordHint": "Leave empty to keep the current password. At least 8 characters.",
+    "canLogin": "Can log in (account active)",
+    "lockedHelp": "The owner's role and status cannot be changed.",
+    "delete": "Delete this account",
+    "deleteHelp": "If this person already recorded sales, payments or stock movements, the account is disabled instead of deleted, to keep the history.",
+    "deleteConfirm": "Delete {name}'s account?",
+    "deactivatedInstead": "This person already has history (sales, payments or stock), so the account was disabled instead of deleted. They can no longer log in."
   },
   "settings": {
     "title": "Shop settings",

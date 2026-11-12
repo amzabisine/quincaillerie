@@ -10,6 +10,13 @@ export interface StaffProfile {
   is_active: boolean;
 }
 
+/** A staff member as the owner sees them on the Staff page (login details come from Supabase Auth). */
+export interface StaffMember extends StaffProfile {
+  email: string;
+  created_at: string;
+  last_sign_in_at: string | null;
+}
+
 export interface Settings {
   shop_name: string;
   tagline: string;

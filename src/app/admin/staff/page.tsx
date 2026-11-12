@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { requireStaff } from "@/server/auth";
 import { listStaff } from "@/server/services/staff";
-import { updateStaff } from "@/server/actions/staff";
 import { StaffForm } from "@/components/admin/StaffForm";
-import { Badge, Card, PageTitle, buttonClass } from "@/components/ui";
+import { RowLink } from "@/components/admin/RowLink";
+import { Badge, Card, PageTitle } from "@/components/ui";
 
 export default async function StaffPage() {
   const me = await requireStaff(["owner"]);
@@ -11,33 +12,33 @@ export default async function StaffPage() {
   const staff = await listStaff();
 
   return (
-    <div className="grid gap-6 max-w-4xl">
-      <PageTitle>{t("staff.title")}</PageTitle>
-      <ul className="divide-y divide-steel-950/8 rounded-lg bg-white ring-1 ring-steel-950/8 text-sm">
-        {staff.map((s) => (
-          <li key={s.id} className="flex flex-wrap items-center gap-3 p-3">
-            <span className="font-semibold">{s.full_name || "—"}</span>
-            <span className="text-steel-600">{s.phone}</span>
-            {!s.is_active && <Badge tone="danger">{t("staff.disabled")}</Badge>}
-            {s.id === me.id ? (
-              <span className="ml-auto"><Badge tone="info">{t(`roles.${s.role}`)}</Badge></span>
-            ) : (
-              <div className="ml-auto flex flex-wrap items-center gap-2">
-                <form action={updateStaff.bind(null, s.id)} className="flex gap-1">
-                  <select name="role" defaultValue={s.role} className="h-8 rounded-md px-2 ring-1 ring-steel-950/15" aria-label={t("staff.role")}>
-                    {(["manager", "cashier", "storekeeper"] as const).map((r) => <option key={r} value={r}>{t(`roles.${r}`)}</option>)}
-                  </select>
-                  <button className={buttonClass("secondary", "h-8 px-3")}>{t("common.save")}</button>
-                </form>
-                <form action={updateStaff.bind(null, s.id)}>
-                  <input type="hidden" name="is_active" value={s.is_active ? "false" : "true"} />
-                  <button className={buttonClass(s.is_active ? "danger" : "secondary", "h-8 px-3")}>{s.is_active ? t("staff.deactivate") : t("staff.activate")}</button>
-                </form>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+    <div className="grid gap-6 max-w-5xl">
+      <PageTitle>{t("staff.title")} <span className="text-steel-400 font-normal">({staff.length})</span></PageTitle>
+      <div className="overflow-x-auto rounded-lg bg-white ring-1 ring-steel-950/8">
+        <table className="w-full text-sm">
+          <thead className="bg-steel-50 text-left text-steel-600">
+            <tr>
+              <th className="p-3">{t("common.name")}</th><th className="p-3">{t("staff.email")}</th><th className="p-3">{t("common.phone")}</th>
+              <th className="p-3">{t("staff.role")}</th><th className="p-3">{t("staff.status")}</th><th className="p-3">{t("staff.lastLogin")}</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-steel-950/8">
+            {staff.map((s) => (
+              <RowLink key={s.id} href={`/admin/staff/${s.id}`} className={s.is_active ? "" : "text-steel-400"}>
+                <td className="p-3">
+                  <Link href={`/admin/staff/${s.id}`} className="font-semibold hover:underline">{s.full_name || "—"}</Link>
+                  {s.id === me.id && <span className="ml-2"><Badge tone="info">{t("staff.you")}</Badge></span>}
+                </td>
+                <td className="p-3">{s.email}</td>
+                <td className="p-3 whitespace-nowrap">{s.phone || "—"}</td>
+                <td className="p-3"><Badge tone={s.role === "owner" ? "warn" : "info"}>{t(`roles.${s.role}`)}</Badge></td>
+                <td className="p-3">{s.is_active ? <Badge tone="ok">{t("staff.active")}</Badge> : <Badge tone="danger">{t("staff.disabled")}</Badge>}</td>
+                <td className="p-3 whitespace-nowrap">{s.last_sign_in_at ? new Date(s.last_sign_in_at).toLocaleString() : t("staff.never")}</td>
+              </RowLink>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Card><h2 className="font-bold mb-3">{t("staff.add")}</h2><StaffForm /></Card>
     </div>
   );

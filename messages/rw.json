@@ -346,7 +346,20 @@
     "disabled": "Yahagaritswe",
     "deactivate": "Hagarika",
     "activate": "Ongera ukoreshe",
-    "roleHelp": "Abacungamari bagurisha kandi bakakira amafaranga. Abashinzwe ububiko bacunga ibicuruzwa n’ububiko. Abayobozi bakora byombi kandi babona inyungu."
+    "roleHelp": "Abacungamari bagurisha kandi bakakira amafaranga. Abashinzwe ububiko bacunga ibicuruzwa n’ububiko. Abayobozi bakora byombi kandi babona inyungu.",
+    "status": "Uko bimeze",
+    "lastLogin": "Aheruka kwinjira",
+    "never": "Ntarinjira",
+    "you": "Wowe",
+    "emailHint": "Imeyili akoresha yinjira.",
+    "newPassword": "Ijambo ry’ibanga rishya",
+    "newPasswordHint": "Bisige ubusa niba utashaka kurihindura. Nibura inyuguti 8.",
+    "canLogin": "Ashobora kwinjira (konti irakora)",
+    "lockedHelp": "Inshingano n’uko konti ya nyirayo imeze ntibishobora guhindurwa.",
+    "delete": "Siba iyi konti",
+    "deleteHelp": "Niba uyu muntu yaranditse ibyagurishijwe, amafaranga yakiriwe cyangwa impinduka mu bubiko, konti izahagarikwa aho gusibwa, kugira ngo amateka abikwe.",
+    "deleteConfirm": "Gusiba konti ya {name}?",
+    "deactivatedInstead": "Uyu muntu afite amateka (ibyagurishijwe, amafaranga cyangwa ububiko), bityo konti yahagaritswe aho gusibwa. Ntashobora kongera kwinjira."
   },
   "settings": {
     "title": "Igenamiterere ry’iduka",

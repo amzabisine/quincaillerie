@@ -346,7 +346,20 @@
     "disabled": "Désactivé",
     "deactivate": "Désactiver",
     "activate": "Activer",
-    "roleHelp": "Les caissiers vendent et encaissent. Les magasiniers gèrent les produits et le stock. Les gérants font les deux et voient le bénéfice."
+    "roleHelp": "Les caissiers vendent et encaissent. Les magasiniers gèrent les produits et le stock. Les gérants font les deux et voient le bénéfice.",
+    "status": "Statut",
+    "lastLogin": "Dernière connexion",
+    "never": "Jamais",
+    "you": "Vous",
+    "emailHint": "Adresse utilisée pour se connecter.",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordHint": "Laisser vide pour garder le mot de passe actuel. 8 caractères minimum.",
+    "canLogin": "Peut se connecter (compte actif)",
+    "lockedHelp": "Le rôle et le statut du propriétaire ne peuvent pas être modifiés.",
+    "delete": "Supprimer ce compte",
+    "deleteHelp": "Si cette personne a déjà enregistré des ventes, paiements ou mouvements de stock, le compte sera désactivé au lieu d'être supprimé, pour garder l'historique.",
+    "deleteConfirm": "Supprimer le compte de {name} ?",
+    "deactivatedInstead": "Cette personne a déjà un historique (ventes, paiements ou stock) : le compte a été désactivé au lieu d'être supprimé. Elle ne peut plus se connecter."
   },
   "settings": {
     "title": "Paramètres du magasin",
