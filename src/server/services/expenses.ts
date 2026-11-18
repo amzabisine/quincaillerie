@@ -14,6 +14,14 @@ export async function listExpenses(month: string): Promise<Expense[]> {
   return (data ?? []) as Expense[];
 }
 
+/** Expenses between two Bukavu dates ("YYYY-MM-DD"), oldest first (for exports). */
+export async function listExpensesBetween(firstDay: string, lastDay: string): Promise<Expense[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("expenses").select("*, by:profiles(full_name)")
+    .gte("spent_on", firstDay).lte("spent_on", lastDay).order("spent_on").order("created_at");
+  return (data ?? []) as Expense[];
+}
+
 export async function getExpense(id: string): Promise<Expense | null> {
   const supabase = await createClient();
   const { data } = await supabase.from("expenses").select("*, by:profiles(full_name)").eq("id", id).maybeSingle();

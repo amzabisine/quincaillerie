@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { FileSpreadsheet, FileText } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { requireStaff } from "@/server/auth";
 import { getMonthlySummary, getSalesReport } from "@/server/services/reports";
-import { currentMonth, dayEnd, dayStart, isDay, isMonth, localDate, monthRange } from "@/lib/dates";
+import { currentMonth, dayEnd, dayStart, localDate } from "@/lib/dates";
+import { choosePeriod, periodQuery, type ReportPeriod } from "@/lib/report-period";
 import { EXPENSE_CATEGORIES } from "@/lib/expenses";
 import { PAYMENT_METHODS } from "@/lib/payments";
 import { canSeeProfit } from "@/lib/permissions";
@@ -10,38 +12,13 @@ import { cn, formatQty, formatMoney, roundMoney } from "@/lib/utils";
 import { RowLink } from "@/components/admin/RowLink";
 import { Card, Input, PageTitle, Stat, buttonClass } from "@/components/ui";
 
-type Period = "today" | "week" | "month" | "custom";
-
-/**
- * Which days the report covers (Bukavu dates, "YYYY-MM-DD").
- * ?period=week: last 7 days · ?month=YYYY-MM: that month · ?from=&to=: custom · nothing: today.
- */
-function choosePeriod(sp: { period?: string; month?: string; from?: string; to?: string }) {
-  const today = localDate();
-  const thisMonth = currentMonth();
-  if (sp.period === "week") {
-    return { period: "week" as Period, fromDay: localDate(new Date(Date.now() - 6 * 86400_000)), toDay: today };
-  }
-  if (isMonth(sp.month) && sp.month <= thisMonth) {
-    const { first, last } = monthRange(sp.month);
-    // a past month is shown as a custom period, so "This month" is only highlighted for the current month
-    return { period: (sp.month === thisMonth ? "month" : "custom") as Period, fromDay: first, toDay: last < today ? last : today, month: sp.month };
-  }
-  if (isDay(sp.from) || isDay(sp.to)) {
-    let fromDay = isDay(sp.from) ? sp.from : today;
-    let toDay = isDay(sp.to) ? sp.to : today;
-    if (fromDay > toDay) [fromDay, toDay] = [toDay, fromDay];
-    return { period: "custom" as Period, fromDay, toDay };
-  }
-  return { period: "today" as Period, fromDay: today, toDay: today };
-}
-
 export default async function ReportsPage({ searchParams }: { searchParams: Promise<{ period?: string; month?: string; from?: string; to?: string }> }) {
   const staff = await requireStaff(["owner", "manager"]);
   const sp = await searchParams;
   const [t, locale] = await Promise.all([getTranslations(), getLocale()]);
   const today = localDate();
   const { period, fromDay, toDay, month } = choosePeriod(sp);
+  const exportQuery = periodQuery(sp);
   const showProfit = canSeeProfit(staff.role);
   const [r, months] = await Promise.all([
     getSalesReport(dayStart(fromDay), toDay === today ? new Date() : dayEnd(toDay)),
@@ -53,7 +30,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
   const periodName = { today: t("reports.today"), week: t("reports.week"), month: t("reports.month"), custom: t("reports.custom") }[period];
   const periodDates = month ? monthLabel(month) : fromDay === toDay ? dayLabel(fromDay) : `${dayLabel(fromDay)} → ${dayLabel(toDay)}`;
 
-  const presets: { id: Period; href: string; label: string }[] = [
+  const presets: { id: ReportPeriod; href: string; label: string }[] = [
     { id: "today", href: "/admin/reports", label: t("reports.today") },
     { id: "week", href: "/admin/reports?period=week", label: t("reports.week") },
     { id: "month", href: `/admin/reports?month=${currentMonth()}`, label: t("reports.month") },
@@ -63,7 +40,16 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="grid gap-6">
-      <PageTitle>{t("reports.title")}</PageTitle>
+      <PageTitle action={
+        <div className="flex gap-2">
+          <a href={`/admin/reports/export?format=xlsx&${exportQuery}`} download className={buttonClass("secondary", "h-9")}>
+            <FileSpreadsheet size={16} aria-hidden /> {t("reports.export.excel")}
+          </a>
+          <a href={`/admin/reports/export?format=pdf&${exportQuery}`} download className={buttonClass("secondary", "h-9")}>
+            <FileText size={16} aria-hidden /> {t("reports.export.pdf")}
+          </a>
+        </div>
+      }>{t("reports.title")}</PageTitle>
       <div className="flex flex-wrap items-end gap-2">
         {presets.map((p) => (
           <Link key={p.id} href={p.href} aria-current={period === p.id ? "page" : undefined}
