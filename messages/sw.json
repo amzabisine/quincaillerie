@@ -148,7 +148,8 @@
     "staff": "Wafanyakazi",
     "settings": "Mipangilio",
     "logout": "Toka",
-    "viewStore": "Angalia duka la mtandaoni"
+    "viewStore": "Angalia duka la mtandaoni",
+    "expenses": "Matumizi"
   },
   "roles": {
     "owner": "Mmiliki",
@@ -174,7 +175,8 @@
     "lowStock": "Stoo ndogo",
     "noLowStock": "Bidhaa zote zina stoo ya kutosha.",
     "byMethod": "Pesa zilizopokelewa leo",
-    "noNewOrders": "Hakuna oda mpya."
+    "noNewOrders": "Hakuna oda mpya.",
+    "netProfitMonth": "Faida halisi ya mwezi"
   },
   "pos": {
     "search": "Tafuta bidhaa, namba au barcode",
@@ -344,7 +346,17 @@
     "debtsTotal": "Jumla ya madeni ya wateja",
     "byMethod": "Pesa kwa njia ya malipo",
     "revenue": "Mapato",
-    "show": "Onyesha"
+    "show": "Onyesha",
+    "custom": "Kipindi maalum",
+    "showing": "Unaangalia",
+    "netProfit": "Faida halisi",
+    "profitTitle": "Faida ya kipindi",
+    "costOfGoods": "Gharama ya bidhaa zilizouzwa",
+    "expenses": "Matumizi",
+    "expensesByCategory": "Matumizi kwa aina",
+    "byMonth": "Mwezi kwa mwezi",
+    "byMonthHelp": "Miezi 12 iliyopita. Faida halisi = faida ghafi − matumizi. Bofya mwezi kuona maelezo.",
+    "monthColumn": "Mwezi"
   },
   "staff": {
     "title": "Wafanyakazi",
@@ -391,5 +403,36 @@
     "mpesaCode": "Namba ya mfanyabiashara M-Pesa (Vodacom)",
     "orangeCode": "Namba ya mfanyabiashara Orange Money",
     "mobileMoneyHelp": "Njia za malipo zenye namba tu ndizo zinaonekana kwenye duka la mtandaoni."
+  },
+  "expenses": {
+    "title": "Matumizi",
+    "add": "Ongeza matumizi",
+    "category": "Aina",
+    "chooseCategory": "Chagua…",
+    "amount": "Kiasi ($)",
+    "paidWith": "Imelipwa kwa",
+    "notePlaceholder": "Mf. kodi ya Novemba, usafiri wa saruji kutoka Goma",
+    "by": "Imerekodiwa na",
+    "none": "Hakuna matumizi kwa kipindi hiki.",
+    "monthTotal": "Jumla ya matumizi ya mwezi",
+    "byCategory": "Kwa aina",
+    "seeProfit": "Ona faida halisi ya mwezi huu →",
+    "previousMonth": "Mwezi uliopita",
+    "nextMonth": "Mwezi ujao",
+    "thisMonth": "Rudi mwezi huu",
+    "delete": "Futa matumizi haya",
+    "deleteConfirm": "Futa matumizi haya?",
+    "deleteHelp": "Mmiliki pekee ndiye anaweza kufuta matumizi. Kama kiasi au tarehe si sahihi, rekebisha hapo juu badala yake.",
+    "recordedBy": "Imerekodiwa na {name} tarehe {date}",
+    "categories": {
+      "rent": "Kodi ya nyumba",
+      "salaries": "Mishahara",
+      "transport": "Usafiri",
+      "utilities": "Umeme na maji",
+      "taxes": "Kodi na ada",
+      "communication": "Simu na intaneti",
+      "repairs": "Matengenezo",
+      "other": "Nyingine"
+    }
   }
 }

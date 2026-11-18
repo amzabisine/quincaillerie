@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Boxes, Globe, LayoutDashboard, Package, Receipt, Settings, ShoppingBag, Store, UserCog, Users } from "lucide-react";
+import { BarChart3, Boxes, Globe, LayoutDashboard, Package, Receipt, Settings, ShoppingBag, Store, UserCog, Users, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Role } from "@/types";
 
@@ -14,6 +14,7 @@ const ITEMS = [
   { href: "/admin/products", key: "products", icon: Package, roles: ["owner", "manager", "storekeeper"] },
   { href: "/admin/stock", key: "stock", icon: Boxes, roles: ["owner", "manager", "storekeeper"] },
   { href: "/admin/customers", key: "customers", icon: Users, roles: ["owner", "manager", "cashier"] },
+  { href: "/admin/expenses", key: "expenses", icon: Wallet, roles: ["owner", "manager"] },
   { href: "/admin/reports", key: "reports", icon: BarChart3, roles: ["owner", "manager"] },
   { href: "/admin/staff", key: "staff", icon: UserCog, roles: ["owner"] },
   { href: "/admin/settings", key: "settings", icon: Settings, roles: ["owner", "manager"] },

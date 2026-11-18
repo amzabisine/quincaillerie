@@ -148,7 +148,8 @@
     "staff": "Abakozi",
     "settings": "Igenamiterere",
     "logout": "Sohoka",
-    "viewStore": "Reba iduka rya internet"
+    "viewStore": "Reba iduka rya internet",
+    "expenses": "Amafaranga yasohotse"
   },
   "roles": {
     "owner": "Nyir’iduka",
@@ -174,7 +175,8 @@
     "lowStock": "Ububiko buke",
     "noLowStock": "Ibicuruzwa byose bihagije mu bubiko.",
     "byMethod": "Amafaranga yakiriwe uyu munsi",
-    "noNewOrders": "Nta byatumijwe bishya."
+    "noNewOrders": "Nta byatumijwe bishya.",
+    "netProfitMonth": "Inyungu nyayo y’uku kwezi"
   },
   "pos": {
     "search": "Shakisha igicuruzwa, kode cyangwa barcode",
@@ -344,7 +346,17 @@
     "debtsTotal": "Amadeni yose y’abakiriya",
     "byMethod": "Amafaranga hakurikijwe uburyo",
     "revenue": "Ayinjiye",
-    "show": "Erekana"
+    "show": "Erekana",
+    "custom": "Igihe wahisemo",
+    "showing": "Urimo kureba",
+    "netProfit": "Inyungu nyayo",
+    "profitTitle": "Inyungu y’iki gihe",
+    "costOfGoods": "Ikiguzi cy’ibicuruzwa byagurishijwe",
+    "expenses": "Amafaranga yasohotse",
+    "expensesByCategory": "Amafaranga yasohotse ku bwoko",
+    "byMonth": "Ukwezi ku kwezi",
+    "byMonthHelp": "Amezi 12 ashize. Inyungu nyayo = inyungu mbumbe − amafaranga yasohotse. Kanda ku kwezi urebe ibisobanuro.",
+    "monthColumn": "Ukwezi"
   },
   "staff": {
     "title": "Abakozi",
@@ -391,5 +403,36 @@
     "mpesaCode": "Nimero y’umucuruzi ya M-Pesa (Vodacom)",
     "orangeCode": "Kode y’umucuruzi ya Orange Money",
     "mobileMoneyHelp": "Uburyo bwo kwishyura bufite kode ni bwo bwonyine bugaragara mu iduka ryo kuri interineti."
+  },
+  "expenses": {
+    "title": "Amafaranga yasohotse",
+    "add": "Ongeraho ayasohotse",
+    "category": "Ubwoko",
+    "chooseCategory": "Hitamo…",
+    "amount": "Amafaranga ($)",
+    "paidWith": "Yishyuwe na",
+    "notePlaceholder": "Urugero: ubukode bw’Ugushyingo, gutwara sima kuva i Goma",
+    "by": "Byanditswe na",
+    "none": "Nta mafaranga yasohotse muri iki gihe.",
+    "monthTotal": "Igiteranyo cy’ayasohotse muri uku kwezi",
+    "byCategory": "Ku bwoko",
+    "seeProfit": "Reba inyungu nyayo y’uku kwezi →",
+    "previousMonth": "Ukwezi gushize",
+    "nextMonth": "Ukwezi gutaha",
+    "thisMonth": "Garuka kuri uku kwezi",
+    "delete": "Siba aya mafaranga yasohotse",
+    "deleteConfirm": "Gusiba aya mafaranga yasohotse?",
+    "deleteHelp": "Nyir’iduka wenyine ni we ushobora gusiba. Niba amafaranga cyangwa itariki bitari byo, bikosore hejuru aho gusiba.",
+    "recordedBy": "Byanditswe na {name} ku wa {date}",
+    "categories": {
+      "rent": "Ubukode",
+      "salaries": "Imishahara",
+      "transport": "Ingendo",
+      "utilities": "Amashanyarazi n’amazi",
+      "taxes": "Imisoro n’amafaranga",
+      "communication": "Telefoni na interineti",
+      "repairs": "Gusana no kwita ku bikoresho",
+      "other": "Ibindi"
+    }
   }
 }
