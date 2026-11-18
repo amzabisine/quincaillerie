@@ -27,8 +27,9 @@ export default async function SalePage({ params, searchParams }: { params: Promi
         <div className="text-center">
           <p className="font-sans text-base font-bold">{settings?.shop_name}</p>
           <p>{settings?.address}</p>
-          {settings?.phone && <p>{settings.phone}</p>}
-          {settings?.tin && <p>TIN: {settings.tin}</p>}
+          {settings?.phone && <p>{t("sales.phoneLabel")}: {settings.phone}</p>}
+          {settings?.whatsapp && settings.whatsapp !== settings.phone && <p>WhatsApp: {settings.whatsapp}</p>}
+          {settings?.tin && <p>{settings.tin}</p>}
         </div>
         <div className="my-3 border-t border-dashed border-steel-400" />
         <p>{t("sales.receipt")} #{sale.number}</p>

@@ -310,7 +310,8 @@
     "credit": "Crédit",
     "none": "Aucune vente.",
     "newSale": "Nouvelle vente",
-    "receiptMessage": "Reçu {number} de {shop}. Total : {total}. Merci !"
+    "receiptMessage": "Reçu {number} de {shop}. Total : {total}. Merci !",
+    "phoneLabel": "Tél."
   },
   "customers": {
     "title": "Clients et crédits",

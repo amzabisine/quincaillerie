@@ -310,7 +310,8 @@
     "credit": "Mkopo",
     "none": "Hakuna mauzo bado.",
     "newSale": "Mauzo mapya",
-    "receiptMessage": "Risiti {number} kutoka {shop}. Jumla: {total}. Asante!"
+    "receiptMessage": "Risiti {number} kutoka {shop}. Jumla: {total}. Asante!",
+    "phoneLabel": "Simu"
   },
   "customers": {
     "title": "Wateja na madeni",

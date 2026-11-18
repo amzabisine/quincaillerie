@@ -310,7 +310,8 @@
     "credit": "Ideni",
     "none": "Nta byagurishijwe biraba.",
     "newSale": "Igurisha rishya",
-    "receiptMessage": "Inyemezabwishyu {number} ya {shop}. Igiteranyo: {total}. Murakoze!"
+    "receiptMessage": "Inyemezabwishyu {number} ya {shop}. Igiteranyo: {total}. Murakoze!",
+    "phoneLabel": "Tel."
   },
   "customers": {
     "title": "Abakiriya n’amadeni",
