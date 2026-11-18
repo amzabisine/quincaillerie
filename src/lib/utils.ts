@@ -8,9 +8,12 @@ export function cn(...inputs: ClassValue[]) {
 /** The shop's currency. Amounts are dollars with cents (numeric(14,2) in the database). */
 export const CURRENCY = { code: "USD", symbol: "$" } as const;
 
-/** 1250.5 -> "1 250,50 $" */
+const money = new Intl.NumberFormat("en-US", { style: "currency", currency: CURRENCY.code, minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const quantity = new Intl.NumberFormat("en-US", { maximumFractionDigits: 3 });
+
+/** 100000000 -> "$100,000,000.00", -5 -> "-$5.00". Same in every language. */
 export function formatMoney(amount: number | string | null | undefined) {
-  return new Intl.NumberFormat("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(amount ?? 0)) + ` ${CURRENCY.symbol}`;
+  return money.format(Number(amount ?? 0));
 }
 
 /** Rounds to cents and removes floating point noise (0.1 + 0.2 -> 0.3). */
@@ -18,9 +21,9 @@ export function roundMoney(amount: number) {
   return Math.round((Number(amount) || 0) * 100) / 100;
 }
 
-/** 2.5 -> "2,5", 10 -> "10" */
+/** 1250.5 -> "1,250.5", 10 -> "10" */
 export function formatQty(q: number | string) {
-  return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 3 }).format(Number(q));
+  return quantity.format(Number(q));
 }
 
 /**
