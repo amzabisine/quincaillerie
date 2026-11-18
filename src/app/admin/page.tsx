@@ -5,8 +5,9 @@ import { requireStaff } from "@/server/auth";
 import { getSalesReport } from "@/server/services/reports";
 import { listNewOrders } from "@/server/services/orders";
 import { listLowStock } from "@/server/services/products";
-import { startOfTodayKigali } from "@/lib/dates";
-import { formatQty, formatRWF } from "@/lib/utils";
+import { startOfTodayLocal } from "@/lib/dates";
+import { PAYMENT_METHODS } from "@/lib/payments";
+import { formatQty, formatMoney } from "@/lib/utils";
 import { Card, PageTitle, Stat } from "@/components/ui";
 
 export default async function Dashboard() {
@@ -16,7 +17,7 @@ export default async function Dashboard() {
 
   const t = await getTranslations();
   const [report, orders, low] = await Promise.all([
-    getSalesReport(startOfTodayKigali(), new Date()),
+    getSalesReport(startOfTodayLocal(), new Date()),
     listNewOrders(8),
     listLowStock(10),
   ]);
@@ -25,18 +26,18 @@ export default async function Dashboard() {
     <div className="grid gap-8">
       <PageTitle>{t("admin.dashboard")}</PageTitle>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <Stat label={t("dashboard.todaySales")} value={formatRWF(report?.sales_total)} />
+        <Stat label={t("dashboard.todaySales")} value={formatMoney(report?.sales_total)} />
         <Stat label={t("dashboard.todaySales")} value={t("dashboard.todayCount", { count: report?.sales_count ?? 0 })} />
-        {report?.profit != null && <Stat label={t("dashboard.profitToday")} value={formatRWF(report.profit)} tone="ok" />}
-        <Stat label={t("dashboard.debtsTotal")} value={formatRWF(report?.debts_total)} tone="danger" />
+        {report?.profit != null && <Stat label={t("dashboard.profitToday")} value={formatMoney(report.profit)} tone="ok" />}
+        <Stat label={t("dashboard.debtsTotal")} value={formatMoney(report?.debts_total)} tone="danger" />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card>
           <h2 className="font-bold mb-3">{t("dashboard.byMethod")}</h2>
           <dl className="grid gap-2 text-sm">
-            {(["cash", "momo", "airtel", "bank"] as const).map((m) => (
-              <div key={m} className="flex justify-between"><dt>{t(`methods.${m}`)}</dt><dd className="font-semibold">{formatRWF(report?.by_method?.[m] ?? 0)}</dd></div>
+            {PAYMENT_METHODS.map((m) => (
+              <div key={m} className="flex justify-between"><dt>{t(`methods.${m}`)}</dt><dd className="font-semibold">{formatMoney(report?.by_method?.[m] ?? 0)}</dd></div>
             ))}
           </dl>
         </Card>
@@ -46,7 +47,7 @@ export default async function Dashboard() {
           {!orders?.length ? <p className="text-sm text-steel-600">{t("dashboard.noNewOrders")}</p> : (
             <ul className="grid gap-2 text-sm">
               {orders.map((o) => (
-                <li key={o.id}><Link href={`/admin/orders/${o.id}`} className="flex justify-between gap-2 hover:underline"><span>{o.code} · {o.customer_name}</span><span className="font-semibold">{formatRWF(o.total)}</span></Link></li>
+                <li key={o.id}><Link href={`/admin/orders/${o.id}`} className="flex justify-between gap-2 hover:underline"><span>{o.code} · {o.customer_name}</span><span className="font-semibold">{formatMoney(o.total)}</span></Link></li>
               ))}
             </ul>
           )}

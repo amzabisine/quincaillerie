@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireStaff } from "@/server/auth";
 import * as staff from "@/server/services/staff";
-import { normalizeRwandaPhone } from "@/lib/utils";
+import { normalizePhone } from "@/lib/utils";
 import type { ActionResult, Role } from "@/types";
 
 const STAFF_ROLES: Role[] = ["manager", "cashier", "storekeeper"];
@@ -48,7 +48,7 @@ export async function updateStaff(id: string, _: ActionResult | null, formData: 
 
   const patch: Parameters<typeof staff.updateStaffProfile>[1] = {
     full_name: fullName,
-    phone: normalizeRwandaPhone(phoneInput) ?? (phoneInput || null),
+    phone: normalizePhone(phoneInput) ?? (phoneInput || null),
   };
   const isLocked = id === me.id || member.role === "owner";
   if (!isLocked) {

@@ -59,7 +59,7 @@
     "yourDetails": "Your details",
     "fullName": "Full name",
     "phone": "Phone number",
-    "phoneHint": "Example: 0788 123 456",
+    "phoneHint": "Example: 0991 234 567 or +250 788 123 456",
     "fulfilment": "How do you want to receive it?",
     "pickup": "Pick up at the shop",
     "delivery": "Delivery",
@@ -71,15 +71,23 @@
     "addressPlaceholder": "Sector, street, landmark",
     "note": "Note for the shop (optional)",
     "payment": "Payment",
-    "payMomo": "MTN MoMo",
-    "payAirtel": "Airtel Money",
-    "payOnCollect": "Pay at pickup or delivery",
-    "payInstructionsMomo": "Dial *182*8*1*{code}# and pay {amount} to {name}. Then enter the transaction ID below.",
-    "payInstructionsAirtel": "Pay {amount} to Airtel Money merchant code {code}. Then enter the transaction ID below.",
     "transactionId": "Transaction ID",
     "transactionHint": "You can also add it later by calling the shop.",
     "placeOrder": "Place order",
-    "placing": "Sending…"
+    "placing": "Sending…",
+    "pay": {
+      "mpesa_code": "M-Pesa (Vodacom)",
+      "orange_code": "Orange Money",
+      "airtel_code": "Airtel Money",
+      "momo_code": "MTN MoMo (Rwanda)",
+      "on_collect": "Pay at pickup or delivery"
+    },
+    "payInstructions": {
+      "mpesa_code": "Pay {amount} to M-Pesa merchant number {code} ({name}). Then enter the transaction ID below.",
+      "orange_code": "Pay {amount} to Orange Money merchant code {code} ({name}). Then enter the transaction ID below.",
+      "airtel_code": "Pay {amount} to Airtel Money merchant code {code}. Then enter the transaction ID below.",
+      "momo_code": "Dial *182*8*1*{code}# and pay {amount} to {name}. Then enter the transaction ID below."
+    }
   },
   "order": {
     "title": "Order {code}",
@@ -150,10 +158,12 @@
   },
   "methods": {
     "cash": "Cash",
-    "momo": "MTN MoMo",
+    "momo": "MTN MoMo (Rwanda)",
     "airtel": "Airtel Money",
     "bank": "Bank",
-    "credit": "Credit"
+    "credit": "Credit",
+    "mpesa": "M-Pesa",
+    "orange": "Orange Money"
   },
   "dashboard": {
     "todaySales": "Sales today",
@@ -190,7 +200,7 @@
       "partial": "Partial payment",
       "later": "Pay later"
     },
-    "amountPaidNow": "Amount paid now (RWF)",
+    "amountPaidNow": "Amount paid now ($)",
     "cashReceived": "Cash received (for change)",
     "paidNow": "Paid now",
     "remaining": "Remaining (added to debt)",
@@ -240,7 +250,7 @@
     "product": "Product",
     "unit": "Unit",
     "quantity": "Quantity",
-    "unitCost": "Cost per unit (RWF)",
+    "unitCost": "Cost per unit ($)",
     "supplier": "Supplier",
     "adjust": "Adjust stock",
     "type": "Reason",
@@ -276,7 +286,7 @@
     "done": "Done",
     "customerMessage": "Hello {name}, about your order {code} from {shop}: ",
     "debtNote": "The remaining amount is added to this customer’s debt, using the phone number on the order.",
-    "setDeliveryFee": "Delivery fee for this address (RWF)",
+    "setDeliveryFee": "Delivery fee for this address ($)",
     "saveFee": "Save fee",
     "feeRequired": "Enter the delivery fee for the customer’s address before completing this order. Enter 0 for free delivery.",
     "feeInvalid": "Enter a valid amount (0 or more).",
@@ -304,7 +314,7 @@
     "title": "Customers and credit",
     "add": "Add customer",
     "type": "Price level",
-    "creditLimit": "Credit limit (RWF)",
+    "creditLimit": "Credit limit ($)",
     "creditLimitHint": "0 means no limit.",
     "balance": "Owes",
     "receivePayment": "Receive a payment",
@@ -369,14 +379,17 @@
     "whatsapp": "WhatsApp",
     "email": "Email",
     "address": "Address",
-    "tin": "TIN (RRA)",
-    "momoCode": "MTN MoMo Pay merchant code",
+    "tin": "Tax number / RCCM / Nat. ID",
+    "momoCode": "MTN MoMo Pay merchant code (Rwanda)",
     "momoName": "Name shown when paying",
     "airtelCode": "Airtel Money merchant code",
     "pickup": "Allow pickup",
     "delivery": "Allow delivery",
     "deliveryNote": "Delivery area",
     "receiptFooter": "Receipt footer",
-    "categories": "Categories"
+    "categories": "Categories",
+    "mpesaCode": "M-Pesa merchant number (Vodacom)",
+    "orangeCode": "Orange Money merchant code",
+    "mobileMoneyHelp": "Only payment methods with a code are shown in the online store."
   }
 }

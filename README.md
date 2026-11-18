@@ -1,9 +1,9 @@
 # Quincaillerie management system
 
-Online store and shop management for one hardware store, starting in BUKAVU.
+Online store and shop management for one hardware store, starting in BUKAVU: **ETS PACIFIQUE** (DR Congo). Prices are in US dollars ($, with cents).
 
-- **Online store** (public): customers browse products, add to cart, and order for pickup or delivery. They pay by Airtel Money merchant code (entering the transaction ID), or at pickup or delivery. No account needed; they track the order with a code and their phone number.
-- **Counter (POS)**: fast product search and barcode scanning, retail or wholesale price per customer, discount, payment by cash, MoMo, Airtel, bank, or credit, and printed or WhatsApp receipts.
+- **Online store** (public): customers browse products, add to cart, and order for pickup or delivery. They pay by mobile money merchant code (M-Pesa, Orange Money, Airtel Money, or MTN MoMo Rwanda; entering the transaction ID), or at pickup or delivery. Phone numbers from Congo (+243) and Rwanda (+250) are accepted. No account needed; they track the order with a code and their phone number.
+- **Counter (POS)**: fast product search and barcode scanning, retail or wholesale price per customer, discount, payment by cash, M-Pesa, Orange Money, Airtel Money, MTN MoMo, bank, or credit, and printed or WhatsApp receipts.
 - **Stock**: products sold in several units (for example nails by kg and by box of 25 kg), stock in with average cost, damage, returns, physical counts, low-stock alerts, and full history.
 - **Credit (ideni)**: customer balances, credit limits, debt payments, WhatsApp reminders.
 - **Reports**: sales, profit, payment methods, best sellers, stock value, debts.
@@ -17,7 +17,7 @@ Next.js 16, React 19, TypeScript, Tailwind CSS 4, Supabase (PostgreSQL, Auth, St
 ## Setup
 
 1. **Install Node.js** (LTS) and run `npm install` in this folder.
-2. **Create a Supabase project** at supabase.com. In **SQL Editor**, paste all of `supabase/migrations/0001_init.sql` and click **Run**. Then run `0003_delivery_fee_by_staff.sql` `0004_fix_order_code.sql` and `0005_set_cost_price.sql` the same way. (If you ran 0001 before Kinyarwanda was added, also run `0002_kinyarwanda.sql`.)
+2. **Create a Supabase project** at supabase.com. In **SQL Editor**, paste all of `supabase/migrations/0001_init.sql` and click **Run**. Then run `0003_delivery_fee_by_staff.sql`, `0004_fix_order_code.sql`, `0005_set_cost_price.sql` and `0006_bukavu_usd.sql` the same way, in that order. (If you ran 0001 before Kinyarwanda was added, also run `0002_kinyarwanda.sql`.)
 3. **Environment**: copy `.env.example` to `.env.local` and fill in the URL, anon key and service_role key from Supabase > Project settings > API.
 4. **Demo data** (optional): `npm run seed`. Accounts (password `Demo1234!`):
 
@@ -32,7 +32,7 @@ Next.js 16, React 19, TypeScript, Tailwind CSS 4, Supabase (PostgreSQL, Auth, St
 
 ## First steps for the real shop
 
-1. Log in as owner, open **Settings**, and enter the shop name, phone, WhatsApp, TIN, and MoMo / Airtel merchant codes.
+1. Log in as owner, open **Settings**, and check the shop name, phone, WhatsApp, NIF / RCCM, and the merchant codes for M-Pesa, Orange Money, Airtel Money (only methods with a code appear in the online store).
 2. Add staff accounts in **Staff**.
 3. Add products in **Products** (with every selling unit and price), then enter the current quantities in **Stock** using "Physical count" or "Stock in".
 4. Delete the demo accounts and data before going live if you used the seed.

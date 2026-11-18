@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { requireStaff } from "@/server/auth";
 import { getCustomerAccount } from "@/server/services/customers";
-import { formatRWF } from "@/lib/utils";
+import { formatMoney } from "@/lib/utils";
 import { DebtPaymentForm, EditCustomerForm } from "@/components/admin/CustomerForms";
 import { Card, PageTitle, Stat } from "@/components/ui";
 
@@ -24,8 +24,8 @@ export default async function CustomerPage({ params }: { params: Promise<{ id: s
     <div className="grid gap-6 max-w-4xl">
       <PageTitle>{customer.name}</PageTitle>
       <div className="grid grid-cols-2 gap-3 max-w-md">
-        <Stat label={t("customers.balance")} value={formatRWF(customer.balance)} tone={customer.balance > 0 ? "danger" : undefined} />
-        <Stat label={t("customers.creditLimit")} value={customer.credit_limit ? formatRWF(customer.credit_limit) : "∞"} />
+        <Stat label={t("customers.balance")} value={formatMoney(customer.balance)} tone={customer.balance > 0 ? "danger" : undefined} />
+        <Stat label={t("customers.creditLimit")} value={customer.credit_limit ? formatMoney(customer.credit_limit) : "∞"} />
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
         {customer.balance > 0 && <Card><h2 className="font-bold mb-3">{t("customers.receivePayment")}</h2><DebtPaymentForm customer={customer} /></Card>}
@@ -40,7 +40,7 @@ export default async function CustomerPage({ params }: { params: Promise<{ id: s
                 const body = (
                   <>
                     <span>{new Date(h.date).toLocaleDateString()} · {h.label}</span>
-                    <span className={h.sign === "+" ? "text-danger" : "text-ok"}>{h.amount > 0 ? `${h.sign}${formatRWF(h.amount)}` : "—"}</span>
+                    <span className={h.sign === "+" ? "text-danger" : "text-ok"}>{h.amount > 0 ? `${h.sign}${formatMoney(h.amount)}` : "—"}</span>
                   </>
                 );
                 return h.href

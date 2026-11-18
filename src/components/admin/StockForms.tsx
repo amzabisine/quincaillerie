@@ -53,7 +53,7 @@ export function StockForms({ products, initialProductId }: { products: Product[]
                 <Field label={t("stock.quantity")} htmlFor="quantity"><Input id="quantity" name="quantity" type="number" step="any" min={0.001} required /></Field>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <Field label={`${t("stock.unitCost")}${unit ? ` / ${t(`units.${unit.unit}`)}` : ""}`} htmlFor="unit_cost"><Input id="unit_cost" name="unit_cost" type="number" min={0} /></Field>
+                <Field label={`${t("stock.unitCost")}${unit ? ` / ${t(`units.${unit.unit}`)}` : ""}`} htmlFor="unit_cost"><Input id="unit_cost" name="unit_cost" type="number" min={0} step="0.01" inputMode="decimal" /></Field>
                 <Field label={t("stock.supplier")} htmlFor="supplier"><Input id="supplier" name="supplier" /></Field>
               </div>
               <Field label={t("common.note")} htmlFor="in_note"><Input id="in_note" name="note" /></Field>

@@ -1,5 +1,5 @@
 /**
- * Demo data: staff accounts, shop settings, 10 hardware products with stock, and 3 customers.
+ * Demo data: staff accounts, shop settings, 10 hardware products with stock (prices in US dollars), and 3 customers.
  * Run once after the migration:  npm run seed
  * Every demo account uses the password: Demo1234!
  */
@@ -18,16 +18,16 @@ async function staff(email: string, full_name: string, role: string) {
 
 type U = { unit: string; factor: number; retail: number; wholesale?: number; isDefault?: boolean };
 const PRODUCTS: { name: string; cat: string; base: string; stock: number; cost: number; low: number; units: U[]; description?: string }[] = [
-  { name: "Ciment 32.5 (sac de 50 kg)", cat: "Ciment et maçonnerie", base: "bag", stock: 140, cost: 11200, low: 20, units: [{ unit: "bag", factor: 1, retail: 12500, wholesale: 12000 }] },
-  { name: "Tôle ondulée G28", cat: "Fer et tôles", base: "sheet", stock: 60, cost: 8600, low: 15, units: [{ unit: "sheet", factor: 1, retail: 9800, wholesale: 9300 }] },
-  { name: "Clous 3 pouces", cat: "Quincaillerie générale", base: "kg", stock: 38, cost: 1700, low: 10, units: [{ unit: "kg", factor: 1, retail: 2200, wholesale: 2000, isDefault: true }, { unit: "box", factor: 25, retail: 50000, wholesale: 47500 }] },
-  { name: "Fer à béton 12 mm", cat: "Fer et tôles", base: "piece", stock: 210, cost: 7800, low: 30, units: [{ unit: "piece", factor: 1, retail: 8900, wholesale: 8500, isDefault: true }, { unit: "bundle", factor: 10, retail: 86000, wholesale: 82000 }] },
-  { name: "Tuyau PVC 1/2 pouce (6 m)", cat: "Plomberie", base: "piece", stock: 4, cost: 2600, low: 10, units: [{ unit: "piece", factor: 1, retail: 3500, wholesale: 3200 }] },
-  { name: "Peinture blanche 4 L", cat: "Peinture", base: "tin", stock: 25, cost: 14500, low: 5, units: [{ unit: "tin", factor: 1, retail: 18000, wholesale: 17000 }] },
-  { name: "Fil électrique 2,5 mm²", cat: "Électricité", base: "meter", stock: 300, cost: 450, low: 50, units: [{ unit: "meter", factor: 1, retail: 600, wholesale: 550, isDefault: true }, { unit: "roll", factor: 100, retail: 55000, wholesale: 52000 }] },
-  { name: "Marteau de charpentier", cat: "Outils", base: "piece", stock: 12, cost: 4800, low: 3, units: [{ unit: "piece", factor: 1, retail: 7000 }] },
-  { name: "Brouette", cat: "Outils", base: "piece", stock: 6, cost: 36000, low: 2, units: [{ unit: "piece", factor: 1, retail: 45000, wholesale: 43000 }] },
-  { name: "Robinet laiton 1/2 pouce", cat: "Plomberie", base: "piece", stock: 18, cost: 3800, low: 5, units: [{ unit: "piece", factor: 1, retail: 5500, wholesale: 5000 }] },
+  { name: "Ciment 32.5 (sac de 50 kg)", cat: "Ciment et maçonnerie", base: "bag", stock: 140, cost: 7.7, low: 20, units: [{ unit: "bag", factor: 1, retail: 8.6, wholesale: 8.3 }] },
+  { name: "Tôle ondulée G28", cat: "Fer et tôles", base: "sheet", stock: 60, cost: 5.95, low: 15, units: [{ unit: "sheet", factor: 1, retail: 6.75, wholesale: 6.4 }] },
+  { name: "Clous 3 pouces", cat: "Quincaillerie générale", base: "kg", stock: 38, cost: 1.15, low: 10, units: [{ unit: "kg", factor: 1, retail: 1.5, wholesale: 1.4, isDefault: true }, { unit: "box", factor: 25, retail: 34.5, wholesale: 32.75 }] },
+  { name: "Fer à béton 12 mm", cat: "Fer et tôles", base: "piece", stock: 210, cost: 5.4, low: 30, units: [{ unit: "piece", factor: 1, retail: 6.15, wholesale: 5.85, isDefault: true }, { unit: "bundle", factor: 10, retail: 59.3, wholesale: 56.55 }] },
+  { name: "Tuyau PVC 1/2 pouce (6 m)", cat: "Plomberie", base: "piece", stock: 4, cost: 1.8, low: 10, units: [{ unit: "piece", factor: 1, retail: 2.4, wholesale: 2.2 }] },
+  { name: "Peinture blanche 4 L", cat: "Peinture", base: "tin", stock: 25, cost: 10, low: 5, units: [{ unit: "tin", factor: 1, retail: 12.4, wholesale: 11.7 }] },
+  { name: "Fil électrique 2,5 mm²", cat: "Électricité", base: "meter", stock: 300, cost: 0.31, low: 50, units: [{ unit: "meter", factor: 1, retail: 0.41, wholesale: 0.38, isDefault: true }, { unit: "roll", factor: 100, retail: 37.95, wholesale: 35.85 }] },
+  { name: "Marteau de charpentier", cat: "Outils", base: "piece", stock: 12, cost: 3.3, low: 3, units: [{ unit: "piece", factor: 1, retail: 4.85 }] },
+  { name: "Brouette", cat: "Outils", base: "piece", stock: 6, cost: 24.85, low: 2, units: [{ unit: "piece", factor: 1, retail: 31.05, wholesale: 29.65 }] },
+  { name: "Robinet laiton 1/2 pouce", cat: "Plomberie", base: "piece", stock: 18, cost: 2.6, low: 5, units: [{ unit: "piece", factor: 1, retail: 3.8, wholesale: 3.45 }] },
 ];
 
 async function main() {
@@ -40,9 +40,9 @@ async function main() {
   await staff("store@quincaillerie.rw", "Eric (magasinier)", "storekeeper");
 
   await db.from("settings").update({
-    shop_name: "Quincaillerie Kivu", tagline: "Matériaux de construction à Gisenyi",
-    phone: "+250788123456", whatsapp: "+250788123456", address: "Gisenyi, Rubavu",
-    momo_code: "123456", momo_name: "Quincaillerie Kivu", delivery_note: "Livraison dans Rubavu",
+    shop_name: "ETS PACIFIQUE", tagline: "Matériaux de construction à Bukavu",
+    phone: "+243902673021", whatsapp: "+250782203526", address: "Bukavu",
+    mpesa_code: "123456", momo_name: "ETS PACIFIQUE", delivery_note: "Livraison dans Bukavu",
   }).eq("id", 1);
 
   const { data: cats } = await db.from("categories").select("id, name_fr");
@@ -60,9 +60,9 @@ async function main() {
   }
 
   await db.from("customers").insert([
-    { name: "Fundi Patrick", phone: "+250788200300", type: "wholesale", balance: 45000, credit_limit: 300000 },
-    { name: "Mama Claudine", phone: "+250728400500", type: "retail" },
-    { name: "Entreprise Umubano BTP", phone: "+250789600700", type: "wholesale", balance: 120000, credit_limit: 1000000 },
+    { name: "Fundi Patrick", phone: "+243991234567", type: "wholesale", balance: 31, credit_limit: 200 },
+    { name: "Mama Claudine", phone: "+243812345678", type: "retail" },
+    { name: "Entreprise Umoja BTP", phone: "+250789600700", type: "wholesale", balance: 82.5, credit_limit: 700 },
   ]);
 
   console.log("Seeded 10 products and 3 customers.");

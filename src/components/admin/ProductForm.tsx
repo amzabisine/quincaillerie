@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Package, Plus, Trash2 } from "lucide-react";
 import { saveProduct } from "@/server/actions/products";
 import { UNITS } from "@/lib/units";
-import { categoryName, formatRWF } from "@/lib/utils";
+import { categoryName, formatMoney, roundMoney } from "@/lib/utils";
 import { Button, Card, Field, Input, Notice, Select, Textarea } from "@/components/ui";
 import type { Category, Product, ProductUnit } from "@/types";
 
@@ -112,11 +112,11 @@ export function ProductForm({ product, categories, showCost = false }: { product
                     </td>
                   )}
                   <td className="py-1 pr-2 align-top">
-                    <Input type="number" min={0} value={u.retail_price || ""} onChange={(e) => update(u.key, { retail_price: Number(e.target.value) })} className="w-28" aria-label={t("products.retailPrice")} required />
+                    <Input type="number" min={0} step="0.01" inputMode="decimal" value={u.retail_price || ""} onChange={(e) => update(u.key, { retail_price: Number(e.target.value) })} className="w-28" aria-label={t("products.retailPrice")} required />
                     {showCost && <Profit price={u.retail_price} cost={unitCost(u.factor)} label={t("products.profit")} />}
                   </td>
                   <td className="py-1 pr-2 align-top">
-                    <Input type="number" min={0} value={u.wholesale_price ?? ""} onChange={(e) => update(u.key, { wholesale_price: e.target.value ? Number(e.target.value) : null })} className="w-28" aria-label={t("products.wholesalePrice")} />
+                    <Input type="number" min={0} step="0.01" inputMode="decimal" value={u.wholesale_price ?? ""} onChange={(e) => update(u.key, { wholesale_price: e.target.value ? Number(e.target.value) : null })} className="w-28" aria-label={t("products.wholesalePrice")} />
                     {showCost && <Profit price={u.wholesale_price} cost={unitCost(u.factor)} label={t("products.profit")} />}
                   </td>
                   <td className="py-1 pr-2"><Input value={u.barcode} onChange={(e) => update(u.key, { barcode: e.target.value })} className="w-32" aria-label={t("products.barcode")} /></td>
@@ -146,10 +146,10 @@ export function ProductForm({ product, categories, showCost = false }: { product
 /** Profit for one unit at this selling price: green when positive, red when selling at a loss. */
 function Profit({ price, cost, label }: { price: number | null; cost: number; label: string }) {
   if (!price || cost <= 0) return null;
-  const profit = Math.round(price - cost);
+  const profit = roundMoney(price - cost);
   return (
     <p className={`mt-0.5 text-xs font-semibold ${profit < 0 ? "text-danger" : "text-ok"}`}>
-      {label}: {profit > 0 ? "+" : ""}{formatRWF(profit)}
+      {label}: {profit > 0 ? "+" : ""}{formatMoney(profit)}
     </p>
   );
 }

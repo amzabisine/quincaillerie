@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { createCustomerForm, receiveDebtPayment, updateCustomer } from "@/server/actions/customers";
 import { Button, Field, Input, Notice, Select, Textarea } from "@/components/ui";
+import { PAYMENT_METHODS } from "@/lib/payments";
 import type { Customer } from "@/types";
 
 export function NewCustomerForm() {
@@ -18,7 +19,7 @@ export function NewCustomerForm() {
       <Field label={t("customers.type")} htmlFor="c_type">
         <Select id="c_type" name="type"><option value="retail">{t("pos.retail")}</option><option value="wholesale">{t("pos.wholesale")}</option></Select>
       </Field>
-      <Field label={t("customers.creditLimit")} htmlFor="c_limit"><Input id="c_limit" name="credit_limit" type="number" min={0} defaultValue={0} className="w-32" /></Field>
+      <Field label={t("customers.creditLimit")} htmlFor="c_limit"><Input id="c_limit" name="credit_limit" type="number" min={0} step="0.01" inputMode="decimal" defaultValue={0} className="w-32" /></Field>
       <Button type="submit" disabled={pending}>{t("common.add")}</Button>
       {state?.error && <div className="sm:col-span-5"><Notice tone="error">{state.error}</Notice></div>}
     </form>
@@ -33,9 +34,9 @@ export function DebtPaymentForm({ customer }: { customer: Customer }) {
   return (
     <form ref={ref} action={action} className="grid gap-3">
       <div className="grid grid-cols-2 gap-3">
-        <Field label={t("customers.amount")} htmlFor="amount"><Input id="amount" name="amount" type="number" min={1} max={customer.balance} required /></Field>
+        <Field label={t("customers.amount")} htmlFor="amount"><Input id="amount" name="amount" type="number" min={0.01} step="0.01" inputMode="decimal" max={customer.balance} required /></Field>
         <Field label={t("pos.paymentMethod")} htmlFor="method">
-          <Select id="method" name="method">{(["cash", "momo", "airtel", "bank"] as const).map((m) => <option key={m} value={m}>{t(`methods.${m}`)}</option>)}</Select>
+          <Select id="method" name="method">{PAYMENT_METHODS.map((m) => <option key={m} value={m}>{t(`methods.${m}`)}</option>)}</Select>
         </Field>
       </div>
       <Field label={t("pos.reference")} htmlFor="reference"><Input id="reference" name="reference" /></Field>
@@ -57,7 +58,7 @@ export function EditCustomerForm({ customer }: { customer: Customer }) {
         <Field label={t("customers.type")} htmlFor="e_type">
           <Select id="e_type" name="type" defaultValue={customer.type}><option value="retail">{t("pos.retail")}</option><option value="wholesale">{t("pos.wholesale")}</option></Select>
         </Field>
-        <Field label={t("customers.creditLimit")} hint={t("customers.creditLimitHint")} htmlFor="e_limit"><Input id="e_limit" name="credit_limit" type="number" min={0} defaultValue={customer.credit_limit} /></Field>
+        <Field label={t("customers.creditLimit")} hint={t("customers.creditLimitHint")} htmlFor="e_limit"><Input id="e_limit" name="credit_limit" type="number" min={0} step="0.01" inputMode="decimal" defaultValue={customer.credit_limit} /></Field>
       </div>
       <Field label={t("common.note")} htmlFor="e_notes"><Textarea id="e_notes" name="notes" defaultValue={customer.notes} rows={2} /></Field>
       {state?.error && <Notice tone="error">{state.error}</Notice>}

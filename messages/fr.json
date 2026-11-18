@@ -59,7 +59,7 @@
     "yourDetails": "Vos coordonnées",
     "fullName": "Nom complet",
     "phone": "Numéro de téléphone",
-    "phoneHint": "Exemple : 0788 123 456",
+    "phoneHint": "Exemple : 0991 234 567 ou +250 788 123 456",
     "fulfilment": "Comment voulez-vous recevoir votre commande ?",
     "pickup": "Retrait au magasin",
     "delivery": "Livraison",
@@ -71,15 +71,23 @@
     "addressPlaceholder": "Secteur, rue, point de repère",
     "note": "Note pour le magasin (facultatif)",
     "payment": "Paiement",
-    "payMomo": "MTN MoMo",
-    "payAirtel": "Airtel Money",
-    "payOnCollect": "Payer au retrait ou à la livraison",
-    "payInstructionsMomo": "Composez *182*8*1*{code}# et payez {amount} à {name}. Ensuite, saisissez l’ID de transaction ci-dessous.",
-    "payInstructionsAirtel": "Payez {amount} au code marchand Airtel Money {code}. Ensuite, saisissez l’ID de transaction ci-dessous.",
     "transactionId": "ID de transaction",
     "transactionHint": "Vous pouvez aussi le donner plus tard en appelant le magasin.",
     "placeOrder": "Passer la commande",
-    "placing": "Envoi…"
+    "placing": "Envoi…",
+    "pay": {
+      "mpesa_code": "M-Pesa (Vodacom)",
+      "orange_code": "Orange Money",
+      "airtel_code": "Airtel Money",
+      "momo_code": "MTN MoMo (Rwanda)",
+      "on_collect": "Payer au retrait ou à la livraison"
+    },
+    "payInstructions": {
+      "mpesa_code": "Payez {amount} au numéro marchand M-Pesa {code} ({name}). Ensuite, saisissez l’ID de transaction ci-dessous.",
+      "orange_code": "Payez {amount} au code marchand Orange Money {code} ({name}). Ensuite, saisissez l’ID de transaction ci-dessous.",
+      "airtel_code": "Payez {amount} au code marchand Airtel Money {code}. Ensuite, saisissez l’ID de transaction ci-dessous.",
+      "momo_code": "Composez *182*8*1*{code}# et payez {amount} à {name}. Ensuite, saisissez l’ID de transaction ci-dessous."
+    }
   },
   "order": {
     "title": "Commande {code}",
@@ -150,10 +158,12 @@
   },
   "methods": {
     "cash": "Espèces",
-    "momo": "MTN MoMo",
+    "momo": "MTN MoMo (Rwanda)",
     "airtel": "Airtel Money",
     "bank": "Banque",
-    "credit": "Crédit"
+    "credit": "Crédit",
+    "mpesa": "M-Pesa",
+    "orange": "Orange Money"
   },
   "dashboard": {
     "todaySales": "Ventes du jour",
@@ -190,7 +200,7 @@
       "partial": "Paiement partiel",
       "later": "Payer plus tard"
     },
-    "amountPaidNow": "Montant payé maintenant (RWF)",
+    "amountPaidNow": "Montant payé maintenant ($)",
     "cashReceived": "Espèces reçues (pour la monnaie)",
     "paidNow": "Payé maintenant",
     "remaining": "Reste (ajouté à la dette)",
@@ -240,7 +250,7 @@
     "product": "Produit",
     "unit": "Unité",
     "quantity": "Quantité",
-    "unitCost": "Coût par unité (RWF)",
+    "unitCost": "Coût par unité ($)",
     "supplier": "Fournisseur",
     "adjust": "Ajuster le stock",
     "type": "Motif",
@@ -276,7 +286,7 @@
     "done": "Terminées",
     "customerMessage": "Bonjour {name}, concernant votre commande {code} chez {shop} : ",
     "debtNote": "Le reste est ajouté à la dette de ce client, grâce au numéro de téléphone de la commande.",
-    "setDeliveryFee": "Frais de livraison pour cette adresse (RWF)",
+    "setDeliveryFee": "Frais de livraison pour cette adresse ($)",
     "saveFee": "Enregistrer les frais",
     "feeRequired": "Entrez les frais de livraison selon l’adresse du client avant de terminer cette commande. Mettez 0 si la livraison est gratuite.",
     "feeInvalid": "Entrez un montant valide (0 ou plus).",
@@ -304,7 +314,7 @@
     "title": "Clients et crédits",
     "add": "Ajouter un client",
     "type": "Niveau de prix",
-    "creditLimit": "Plafond de crédit (RWF)",
+    "creditLimit": "Plafond de crédit ($)",
     "creditLimitHint": "0 signifie sans plafond.",
     "balance": "Doit",
     "receivePayment": "Recevoir un paiement",
@@ -369,14 +379,17 @@
     "whatsapp": "WhatsApp",
     "email": "E-mail",
     "address": "Adresse",
-    "tin": "NIF (RRA)",
-    "momoCode": "Code marchand MTN MoMo Pay",
+    "tin": "NIF / RCCM / Id. Nat.",
+    "momoCode": "Code marchand MTN MoMo Pay (Rwanda)",
     "momoName": "Nom affiché lors du paiement",
     "airtelCode": "Code marchand Airtel Money",
     "pickup": "Autoriser le retrait",
     "delivery": "Autoriser la livraison",
     "deliveryNote": "Zone de livraison",
     "receiptFooter": "Pied de reçu",
-    "categories": "Catégories"
+    "categories": "Catégories",
+    "mpesaCode": "Numéro marchand M-Pesa (Vodacom)",
+    "orangeCode": "Code marchand Orange Money",
+    "mobileMoneyHelp": "Seuls les moyens de paiement avec un code apparaissent dans la boutique en ligne."
   }
 }

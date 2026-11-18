@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Check, Minus, Plus } from "lucide-react";
-import { formatRWF } from "@/lib/utils";
+import { formatMoney } from "@/lib/utils";
 import { Button, Select } from "@/components/ui";
 import { useCart } from "./CartProvider";
 import type { CatalogProduct } from "@/types";
@@ -33,7 +33,7 @@ export function AddToCart({ product, compact = false }: { product: CatalogProduc
       {product.units.length > 1 && (
         <Select aria-label={t("store.chooseUnit")} value={unitId} onChange={(e) => setUnitId(e.target.value)}>
           {product.units.map((u) => (
-            <option key={u.id} value={u.id}>{t(`units.${u.unit}`)} · {formatRWF(u.retail_price)}</option>
+            <option key={u.id} value={u.id}>{t(`units.${u.unit}`)} · {formatMoney(u.retail_price)}</option>
           ))}
         </Select>
       )}

@@ -6,19 +6,22 @@ import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Package, Trash2 } from "lucide-react";
 import { placeOrder } from "@/server/actions/store";
-import { cn, formatRWF } from "@/lib/utils";
+import { cn, formatMoney } from "@/lib/utils";
 import { Button, Field, Input, Notice, Textarea, buttonClass } from "@/components/ui";
 import { useCart } from "./CartProvider";
-import type { Settings } from "@/types";
+import { ONLINE_PAYMENTS } from "@/lib/payments";
+import type { OnlinePaymentMethod, Settings } from "@/types";
 
-type Pay = "momo_code" | "airtel_code" | "on_collect";
+type Pay = OnlinePaymentMethod;
 
 export function Checkout({ settings }: { settings: Settings }) {
   const t = useTranslations();
   const router = useRouter();
   const { items, subtotal, setQuantity, remove, clear } = useCart();
   const [fulfilment, setFulfilment] = useState<"pickup" | "delivery">(settings.pickup_enabled ? "pickup" : "delivery");
-  const [pay, setPay] = useState<Pay>(settings.momo_code ? "momo_code" : "on_collect");
+  // Mobile money options the shop has a merchant code for (set in Settings)
+  const mobile = ONLINE_PAYMENTS.filter((o) => !!settings[o.codeField]);
+  const [pay, setPay] = useState<Pay>(mobile[0]?.id ?? "on_collect");
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
 
@@ -56,11 +59,8 @@ export function Checkout({ settings }: { settings: Settings }) {
     });
   }
 
-  const payOptions: { id: Pay; label: string; show: boolean }[] = [
-    { id: "momo_code", label: t("cart.payMomo"), show: !!settings.momo_code },
-    { id: "airtel_code", label: t("cart.payAirtel"), show: !!settings.airtel_code },
-    { id: "on_collect", label: t("cart.payOnCollect"), show: true },
-  ];
+  const payOptions: Pay[] = [...mobile.map((o) => o.id), "on_collect"];
+  const chosen = mobile.find((o) => o.id === pay);
 
   return (
     <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-[1fr_380px]">
@@ -74,12 +74,12 @@ export function Checkout({ settings }: { settings: Settings }) {
               </div>
               <div className="min-w-0 flex-1">
                 <p className="font-semibold leading-tight">{i.name}</p>
-                <p className="text-sm text-steel-600">{formatRWF(i.price)} / {t(`units.${i.unit}`)}</p>
+                <p className="text-sm text-steel-600">{formatMoney(i.price)} / {t(`units.${i.unit}`)}</p>
               </div>
               <input type="number" min={0.1} step="any" value={i.quantity} aria-label={t("common.quantity")}
                 onChange={(e) => setQuantity(i.unitId, Number(e.target.value))}
                 className="h-9 w-20 rounded-md px-2 text-center text-sm ring-1 ring-steel-950/15" />
-              <p className="w-28 text-right font-semibold">{formatRWF(i.price * i.quantity)}</p>
+              <p className="w-28 text-right font-semibold">{formatMoney(i.price * i.quantity)}</p>
               <button type="button" onClick={() => remove(i.unitId)} aria-label={t("common.remove")} className="p-2 text-steel-600 hover:text-danger"><Trash2 size={16} /></button>
             </li>
           ))}
@@ -114,23 +114,22 @@ export function Checkout({ settings }: { settings: Settings }) {
       <aside className="lg:sticky lg:top-24 self-start rounded-lg bg-white p-5 ring-1 ring-steel-950/8 grid gap-4">
         <h2 className="text-lg font-bold">{t("cart.payment")}</h2>
         <div className="grid gap-2">
-          {payOptions.filter((o) => o.show).map((o) => (
-            <Choice key={o.id} checked={pay === o.id} onChange={() => setPay(o.id)} name="pay" label={o.label} />
+          {payOptions.map((id) => (
+            <Choice key={id} checked={pay === id} onChange={() => setPay(id)} name="pay" label={t(`cart.pay.${id}`)} />
           ))}
         </div>
-        {pay === "momo_code" && (
-          <Notice>{t("cart.payInstructionsMomo", { code: settings.momo_code ?? "", amount: formatRWF(total), name: settings.momo_name || settings.shop_name })}</Notice>
-        )}
-        {pay === "airtel_code" && (
-          <Notice>{t("cart.payInstructionsAirtel", { code: settings.airtel_code ?? "", amount: formatRWF(total) })}</Notice>
+        {chosen && (
+          <Notice>{t(`cart.payInstructions.${chosen.id}`, {
+            code: String(settings[chosen.codeField] ?? ""), amount: formatMoney(total), name: settings.momo_name || settings.shop_name,
+          })}</Notice>
         )}
         {pay !== "on_collect" && (
           <Field label={t("cart.transactionId")} hint={t("cart.transactionHint")} htmlFor="reference"><Input id="reference" name="reference" /></Field>
         )}
         <dl className="grid gap-1 border-t border-steel-950/8 pt-4 text-sm">
-          <div className="flex justify-between"><dt>{t("common.subtotal")}</dt><dd>{formatRWF(subtotal)}</dd></div>
+          <div className="flex justify-between"><dt>{t("common.subtotal")}</dt><dd>{formatMoney(subtotal)}</dd></div>
           {isDelivery && <div className="flex justify-between"><dt>{t("cart.deliveryFee")}</dt><dd>{t("cart.feeToConfirm")}</dd></div>}
-          <div className="flex justify-between text-lg font-bold"><dt>{t("common.total")}</dt><dd>{formatRWF(total)}</dd></div>
+          <div className="flex justify-between text-lg font-bold"><dt>{t("common.total")}</dt><dd>{formatMoney(total)}</dd></div>
         </dl>
         {isDelivery && <Notice>{t("cart.feeNotice")}</Notice>}
         {error && <Notice tone="error">{error}</Notice>}

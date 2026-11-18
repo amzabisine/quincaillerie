@@ -6,7 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Minus, Plus, Search, Trash2, UserPlus, X } from "lucide-react";
 import { completeSale } from "@/server/actions/sales";
 import { createCustomer } from "@/server/actions/customers";
-import { categoryName, cn, formatQty, formatRWF } from "@/lib/utils";
+import { categoryName, cn, formatQty, formatMoney, roundMoney } from "@/lib/utils";
 import { Button, Input, Notice, Select } from "@/components/ui";
 import { PaymentOptions, computePayment, initialPayment, type PaymentState } from "./PaymentOptions";
 import type { Category, Customer, Product } from "@/types";
@@ -52,7 +52,7 @@ export function Pos({ products, categories, initialCustomers }: { products: Prod
   }, [products, query, category]);
 
   const priceOf = (l: Line) => (wholesale ? l.wholesale ?? l.retail : l.retail);
-  const subtotal = lines.reduce((s, l) => s + Math.round(priceOf(l) * l.qty), 0);
+  const subtotal = roundMoney(lines.reduce((s, l) => s + roundMoney(priceOf(l) * l.qty), 0));
   const total = Math.max(0, subtotal - discount);
   const { paid, remaining, partialInvalid } = computePayment(payment, total);
 
@@ -104,7 +104,7 @@ export function Pos({ products, categories, initialCustomers }: { products: Prod
 
   function submit() {
     setError("");
-    if (partialInvalid) { setError(t("pos.partialInvalid", { max: formatRWF(total - 1) })); return; }
+    if (partialInvalid) { setError(t("pos.partialInvalid", { max: formatMoney(roundMoney(total - 0.01)) })); return; }
     if (remaining > 0 && !customer) { setError(t("pos.creditNeedsCustomer")); return; }
     startTransition(async () => {
       const res = await completeSale({
@@ -161,7 +161,7 @@ export function Pos({ products, categories, initialCustomers }: { products: Prod
                   <span className={cn("mt-1 block text-xs", low ? "text-danger font-semibold" : "text-steel-600")}>
                     {formatQty(p.stock)} {t(`units.${p.base_unit}`)}
                   </span>
-                  {u && <span className="mt-1 block text-sm font-bold">{formatRWF(wholesale ? u.wholesale_price ?? u.retail_price : u.retail_price)}</span>}
+                  {u && <span className="mt-1 block text-sm font-bold">{formatMoney(wholesale ? u.wholesale_price ?? u.retail_price : u.retail_price)}</span>}
                 </button>
               </li>
             );
@@ -177,7 +177,7 @@ export function Pos({ products, categories, initialCustomers }: { products: Prod
             <Select aria-label={t("pos.customer")} value={customerId} onChange={(e) => setCustomerId(e.target.value)}>
               <option value="">{t("pos.walkIn")}</option>
               {customers.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}{c.type === "wholesale" ? " ★" : ""}{c.balance > 0 ? ` (${formatRWF(c.balance)})` : ""}</option>
+                <option key={c.id} value={c.id}>{c.name}{c.type === "wholesale" ? " ★" : ""}{c.balance > 0 ? ` (${formatMoney(c.balance)})` : ""}</option>
               ))}
             </Select>
             <Button type="button" variant="secondary" onClick={() => setShowNewCustomer(!showNewCustomer)} aria-label={t("pos.newCustomer")} className="px-3">
@@ -223,7 +223,7 @@ export function Pos({ products, categories, initialCustomers }: { products: Prod
                         {p!.product_units!.map((u) => <option key={u.id} value={u.id}>{t(`units.${u.unit}`)}</option>)}
                       </select>
                     ) : <span className="text-steel-600">{t(`units.${l.unit}`)}</span>}
-                    <span className="ml-auto font-semibold">{formatRWF(priceOf(l) * l.qty)}</span>
+                    <span className="ml-auto font-semibold">{formatMoney(priceOf(l) * l.qty)}</span>
                   </div>
                 </li>
               );
@@ -234,9 +234,9 @@ export function Pos({ products, categories, initialCustomers }: { products: Prod
         <div className="grid gap-3 border-t border-steel-950/8 p-4">
           <div className="flex items-center justify-between gap-3 text-sm">
             <label htmlFor="discount">{t("common.discount")}</label>
-            <Input id="discount" type="number" min={0} step={100} value={discount || ""} onChange={(e) => setDiscount(Math.min(subtotal, Math.max(0, Number(e.target.value))))} className="h-9 w-32 text-right" />
+            <Input id="discount" type="number" inputMode="decimal" min={0} step="0.01" value={discount || ""} onChange={(e) => setDiscount(Math.min(subtotal, Math.max(0, Number(e.target.value))))} className="h-9 w-32 text-right" />
           </div>
-          <div className="flex justify-between text-xl font-bold"><span>{t("common.total")}</span><span>{formatRWF(total)}</span></div>
+          <div className="flex justify-between text-xl font-bold"><span>{t("common.total")}</span><span>{formatMoney(total)}</span></div>
 
           <PaymentOptions value={payment} onChange={setPayment} total={total} currentBalance={customer ? customer.balance : null} />
           {remaining > 0 && !customer && <Notice tone="error">{t("pos.creditNeedsCustomer")}</Notice>}

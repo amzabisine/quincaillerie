@@ -1,7 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { cn, formatRWF } from "@/lib/utils";
+import { cn, formatMoney, roundMoney } from "@/lib/utils";
+import { PAYMENT_METHODS } from "@/lib/payments";
 import { Input } from "@/components/ui";
 import type { PaymentMethod } from "@/types";
 
@@ -12,19 +13,17 @@ export interface PaymentState {
   method: PaymentMethod;
   partialAmount: string; // amount paid now (partial)
   cashReceived: string;  // optional, only to calculate change
-  reference: string;     // MoMo / Airtel / bank transaction ID
+  reference: string;     // mobile money / bank transaction ID
 }
 
 export const initialPayment: PaymentState = { mode: "full", method: "cash", partialAmount: "", cashReceived: "", reference: "" };
 
-const METHODS: PaymentMethod[] = ["cash", "momo", "airtel", "bank"];
-
 /** How much is paid now and how much goes on credit. */
 export function computePayment(p: PaymentState, total: number) {
-  const paid = p.mode === "full" ? total : p.mode === "partial" ? Math.min(total, Math.max(0, Math.round(Number(p.partialAmount) || 0))) : 0;
-  const remaining = Math.max(0, total - paid);
+  const paid = p.mode === "full" ? total : p.mode === "partial" ? Math.min(total, Math.max(0, roundMoney(Number(p.partialAmount) || 0))) : 0;
+  const remaining = Math.max(0, roundMoney(total - paid));
   const received = Number(p.cashReceived) || 0;
-  const change = p.method === "cash" && received > paid ? received - paid : 0;
+  const change = p.method === "cash" && received > paid ? roundMoney(received - paid) : 0;
   const partialInvalid = p.mode === "partial" && (paid <= 0 || paid >= total);
   return { paid, remaining, change, partialInvalid };
 }
@@ -57,8 +56,8 @@ export function PaymentOptions({ value, onChange, total, currentBalance }: {
       </div>
 
       {value.mode !== "later" && (
-        <div className="grid grid-cols-4 gap-1.5" role="radiogroup" aria-label={t("pos.paymentMethod")}>
-          {METHODS.map((m) => (
+        <div className="grid grid-cols-3 gap-1.5" role="radiogroup" aria-label={t("pos.paymentMethod")}>
+          {PAYMENT_METHODS.map((m) => (
             <button key={m} type="button" role="radio" aria-checked={value.method === m} onClick={() => set({ method: m })}
               className={cn("h-9 rounded-md text-xs font-semibold ring-1", value.method === m ? "bg-signal text-steel-950 ring-signal" : "ring-steel-950/15 hover:bg-steel-50")}>
               {t(`methods.${m}`)}
@@ -69,7 +68,7 @@ export function PaymentOptions({ value, onChange, total, currentBalance }: {
 
       {value.mode === "partial" && (
         <label className="text-xs text-steel-600">{t("pos.amountPaidNow")}
-          <Input type="number" inputMode="numeric" min={1} max={Math.max(1, total - 1)} value={value.partialAmount}
+          <Input type="number" inputMode="decimal" step="0.01" min={0.01} max={Math.max(0.01, roundMoney(total - 0.01))} value={value.partialAmount}
             onChange={(e) => set({ partialAmount: e.target.value })} className="mt-1 h-10 text-base" autoFocus />
         </label>
       )}
@@ -78,7 +77,7 @@ export function PaymentOptions({ value, onChange, total, currentBalance }: {
         <div className="grid grid-cols-2 gap-2">
           {value.method === "cash" ? (
             <label className="text-xs text-steel-600">{t("pos.cashReceived")}
-              <Input type="number" inputMode="numeric" min={0} value={value.cashReceived} placeholder={String(paid || "")}
+              <Input type="number" inputMode="decimal" step="0.01" min={0} value={value.cashReceived} placeholder={String(paid || "")}
                 onChange={(e) => set({ cashReceived: e.target.value })} className="mt-1 h-9" />
             </label>
           ) : (
@@ -90,12 +89,12 @@ export function PaymentOptions({ value, onChange, total, currentBalance }: {
       )}
 
       <dl className="grid gap-1 rounded-md bg-steel-50 p-3 text-sm">
-        <div className="flex justify-between"><dt>{t("pos.paidNow")}</dt><dd className="font-semibold">{formatRWF(paid)}</dd></div>
-        {remaining > 0 && <div className="flex justify-between text-danger"><dt>{t("pos.remaining")}</dt><dd className="font-bold">{formatRWF(remaining)}</dd></div>}
+        <div className="flex justify-between"><dt>{t("pos.paidNow")}</dt><dd className="font-semibold">{formatMoney(paid)}</dd></div>
+        {remaining > 0 && <div className="flex justify-between text-danger"><dt>{t("pos.remaining")}</dt><dd className="font-bold">{formatMoney(remaining)}</dd></div>}
         {remaining > 0 && currentBalance != null && (
-          <div className="flex justify-between text-steel-600"><dt>{t("pos.newBalance")}</dt><dd>{formatRWF(currentBalance)} → <strong className="text-danger">{formatRWF(currentBalance + remaining)}</strong></dd></div>
+          <div className="flex justify-between text-steel-600"><dt>{t("pos.newBalance")}</dt><dd>{formatMoney(currentBalance)} → <strong className="text-danger">{formatMoney(currentBalance + remaining)}</strong></dd></div>
         )}
-        {change > 0 && <div className="flex justify-between text-ok"><dt>{t("pos.changeLabel")}</dt><dd className="font-bold">{formatRWF(change)}</dd></div>}
+        {change > 0 && <div className="flex justify-between text-ok"><dt>{t("pos.changeLabel")}</dt><dd className="font-bold">{formatMoney(change)}</dd></div>}
       </dl>
     </div>
   );

@@ -1,7 +1,7 @@
-/** Start of today in Rwanda time (UTC+2) */
-export function startOfTodayKigali() {
+/** Start of today in the shop's time zone: Bukavu, Central Africa Time (UTC+2, no daylight saving). */
+export function startOfTodayLocal() {
   const now = new Date();
-  const kigali = new Date(now.getTime() + 2 * 3600_000);
-  kigali.setUTCHours(0, 0, 0, 0);
-  return new Date(kigali.getTime() - 2 * 3600_000);
+  const local = new Date(now.getTime() + 2 * 3600_000);
+  local.setUTCHours(0, 0, 0, 0);
+  return new Date(local.getTime() - 2 * 3600_000);
 }

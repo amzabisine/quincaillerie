@@ -3,8 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/server/auth";
 import * as customers from "@/server/services/customers";
-import { normalizeRwandaPhone } from "@/lib/utils";
+import { normalizePhone, roundMoney } from "@/lib/utils";
 import type { ActionResult, Customer } from "@/types";
+
+/** Congo or Rwanda number in standard form; any other number is kept as typed (never erased). */
+const phoneOrNull = (raw: string) => normalizePhone(raw) ?? (raw.trim() || null);
 
 export async function createCustomer(input: { name: string; phone: string; type: "retail" | "wholesale"; creditLimit?: number })
   : Promise<ActionResult & { customer?: Customer }> {
@@ -13,9 +16,9 @@ export async function createCustomer(input: { name: string; phone: string; type:
   if (!name) return { ok: false, error: "Name is required" };
   const res = await customers.createCustomer({
     name,
-    phone: normalizeRwandaPhone(input.phone) ?? (input.phone.trim() || null),
+    phone: phoneOrNull(input.phone),
     type: input.type,
-    credit_limit: Math.max(0, Math.round(input.creditLimit ?? 0)),
+    credit_limit: Math.max(0, roundMoney(input.creditLimit ?? 0)),
   });
   if (!res.ok) return res;
   revalidatePath("/admin/customers");
@@ -35,9 +38,9 @@ export async function updateCustomer(id: string, _: ActionResult | null, formDat
   await requireStaff(["owner", "manager"]);
   const res = await customers.updateCustomer(id, {
     name: String(formData.get("name") || "").trim(),
-    phone: normalizeRwandaPhone(String(formData.get("phone") || "")) ?? null,
+    phone: phoneOrNull(String(formData.get("phone") || "")),
     type: formData.get("type") === "wholesale" ? "wholesale" : "retail",
-    credit_limit: Math.max(0, Number(formData.get("credit_limit") || 0)),
+    credit_limit: Math.max(0, roundMoney(Number(formData.get("credit_limit") || 0))),
     notes: String(formData.get("notes") || ""),
   });
   if (!res.ok) return res;
@@ -49,7 +52,7 @@ export async function receiveDebtPayment(customerId: string, _: ActionResult | n
   await requireStaff(["owner", "manager", "cashier"]);
   const res = await customers.receiveDebtPayment({
     customerId,
-    amount: Math.round(Number(formData.get("amount") || 0)),
+    amount: roundMoney(Number(formData.get("amount") || 0)),
     method: String(formData.get("method") || "cash"),
     reference: String(formData.get("reference") || ""),
   });

@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const s = await getPublicSettings();
   return {
     title: { default: s.shop_name, template: `%s | ${s.shop_name}` },
-    description: s.tagline || "Quincaillerie à Rubavu",
+    description: s.tagline || "Quincaillerie à Bukavu",
   };
 }
 

@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { MessageCircle, Package } from "lucide-react";
 import { getCatalog } from "@/server/services/catalog";
 import { getPublicSettings } from "@/server/services/settings";
-import { formatRWF, whatsappLink } from "@/lib/utils";
+import { formatMoney, whatsappLink } from "@/lib/utils";
 import { AddToCart } from "@/components/store/AddToCart";
 import { Badge, buttonClass } from "@/components/ui";
 
@@ -36,7 +36,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             {product.units.map((u) => (
               <tr key={u.id}>
                 <td className="py-2">{t(`units.${u.unit}`)}</td>
-                <td className="py-2 text-right font-semibold">{formatRWF(u.retail_price)}</td>
+                <td className="py-2 text-right font-semibold">{formatMoney(u.retail_price)}</td>
               </tr>
             ))}
           </tbody>

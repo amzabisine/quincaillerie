@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/server/auth";
 import * as sales from "@/server/services/sales";
+import { roundMoney } from "@/lib/utils";
 import type { ActionResult, PaymentMethod } from "@/types";
 
 export interface SaleInput {
@@ -20,7 +21,7 @@ export async function completeSale(input: SaleInput): Promise<ActionResult> {
   const res = await sales.completeSale({
     items: input.items,
     customerId: input.customerId,
-    discount: Math.max(0, Math.round(input.discount || 0)),
+    discount: Math.max(0, roundMoney(input.discount || 0)),
     payment: input.payment,
     note: input.note ?? "",
     orderId: input.orderId ?? null,

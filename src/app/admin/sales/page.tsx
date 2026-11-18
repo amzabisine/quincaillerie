@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { requireStaff } from "@/server/auth";
 import { listSales } from "@/server/services/sales";
-import { formatRWF } from "@/lib/utils";
+import { formatMoney } from "@/lib/utils";
 import { Badge, Card, PageTitle, buttonClass } from "@/components/ui";
 import { RowLink } from "@/components/admin/RowLink";
 
@@ -29,7 +29,7 @@ export default async function SalesPage({ searchParams }: { searchParams: Promis
                   <td className="p-3 whitespace-nowrap">{new Date(s.created_at).toLocaleString()}</td>
                   <td className="p-3">{s.customer_name || "—"}</td>
                   <td className="p-3">{s.cashier?.full_name ?? ""}</td>
-                  <td className="p-3 text-right font-semibold">{formatRWF(s.total)}</td>
+                  <td className="p-3 text-right font-semibold">{formatMoney(s.total)}</td>
                   <td className="p-3 text-right space-x-1">
                     {s.channel === "online" && <Badge tone="info">{t("sales.online")}</Badge>}
                     {s.credit_amount > 0 && <Badge tone="warn">{t("sales.credit")}</Badge>}
