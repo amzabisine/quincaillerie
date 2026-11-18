@@ -59,7 +59,7 @@
     "yourDetails": "Taarifa zako",
     "fullName": "Jina kamili",
     "phone": "Namba ya simu",
-    "phoneHint": "Mfano: 0788 123 456",
+    "phoneHint": "Mfano: 0991 234 567 au +250 788 123 456",
     "fulfilment": "Ungependa kupokea vipi?",
     "pickup": "Kuchukua dukani",
     "delivery": "Kuletewa",
@@ -71,15 +71,23 @@
     "addressPlaceholder": "Sekta, mtaa, alama inayojulikana",
     "note": "Ujumbe kwa duka (si lazima)",
     "payment": "Malipo",
-    "payMomo": "MTN MoMo",
-    "payAirtel": "Airtel Money",
-    "payOnCollect": "Lipa wakati wa kuchukua au kuletewa",
-    "payInstructionsMomo": "Piga *182*8*1*{code}# na ulipe {amount} kwa {name}. Kisha andika namba ya muamala hapa chini.",
-    "payInstructionsAirtel": "Lipa {amount} kwa namba ya mfanyabiashara ya Airtel Money {code}. Kisha andika namba ya muamala hapa chini.",
     "transactionId": "Namba ya muamala",
     "transactionHint": "Unaweza pia kuitoa baadaye kwa kupiga simu dukani.",
     "placeOrder": "Tuma oda",
-    "placing": "Inatuma…"
+    "placing": "Inatuma…",
+    "pay": {
+      "mpesa_code": "M-Pesa (Vodacom)",
+      "orange_code": "Orange Money",
+      "airtel_code": "Airtel Money",
+      "momo_code": "MTN MoMo (Rwanda)",
+      "on_collect": "Lipa wakati wa kuchukua au kuletewa"
+    },
+    "payInstructions": {
+      "mpesa_code": "Lipa {amount} kwa namba ya mfanyabiashara ya M-Pesa {code} ({name}). Kisha andika namba ya muamala hapa chini.",
+      "orange_code": "Lipa {amount} kwa namba ya mfanyabiashara ya Orange Money {code} ({name}). Kisha andika namba ya muamala hapa chini.",
+      "airtel_code": "Lipa {amount} kwa namba ya mfanyabiashara ya Airtel Money {code}. Kisha andika namba ya muamala hapa chini.",
+      "momo_code": "Piga *182*8*1*{code}# na ulipe {amount} kwa {name}. Kisha andika namba ya muamala hapa chini."
+    }
   },
   "order": {
     "title": "Oda {code}",
@@ -150,10 +158,12 @@
   },
   "methods": {
     "cash": "Taslimu",
-    "momo": "MTN MoMo",
+    "momo": "MTN MoMo (Rwanda)",
     "airtel": "Airtel Money",
     "bank": "Benki",
-    "credit": "Mkopo"
+    "credit": "Mkopo",
+    "mpesa": "M-Pesa",
+    "orange": "Orange Money"
   },
   "dashboard": {
     "todaySales": "Mauzo ya leo",
@@ -190,7 +200,7 @@
       "partial": "Malipo ya sehemu",
       "later": "Atalipa baadaye"
     },
-    "amountPaidNow": "Kiasi kilicholipwa sasa (RWF)",
+    "amountPaidNow": "Kiasi kilicholipwa sasa ($)",
     "cashReceived": "Taslimu iliyopokelewa (kwa chenji)",
     "paidNow": "Imelipwa sasa",
     "remaining": "Kilichobaki (kinaongezwa kwenye deni)",
@@ -240,7 +250,7 @@
     "product": "Bidhaa",
     "unit": "Kipimo",
     "quantity": "Idadi",
-    "unitCost": "Gharama kwa kipimo (RWF)",
+    "unitCost": "Gharama kwa kipimo ($)",
     "supplier": "Msambazaji",
     "adjust": "Rekebisha stoo",
     "type": "Sababu",
@@ -276,7 +286,7 @@
     "done": "Zilizokamilika",
     "customerMessage": "Habari {name}, kuhusu oda yako {code} kutoka {shop}: ",
     "debtNote": "Kiasi kilichobaki kinaongezwa kwenye deni la mteja huyu, kwa kutumia namba ya simu ya oda.",
-    "setDeliveryFee": "Gharama ya kuletewa kwa anwani hii (RWF)",
+    "setDeliveryFee": "Gharama ya kuletewa kwa anwani hii ($)",
     "saveFee": "Hifadhi gharama",
     "feeRequired": "Weka gharama ya kuletewa kulingana na anwani ya mteja kabla ya kukamilisha oda hii. Weka 0 kama ni bure.",
     "feeInvalid": "Weka kiasi sahihi (0 au zaidi).",
@@ -304,7 +314,7 @@
     "title": "Wateja na madeni",
     "add": "Ongeza mteja",
     "type": "Kiwango cha bei",
-    "creditLimit": "Kikomo cha mkopo (RWF)",
+    "creditLimit": "Kikomo cha mkopo ($)",
     "creditLimitHint": "0 inamaanisha hakuna kikomo.",
     "balance": "Anadaiwa",
     "receivePayment": "Pokea malipo",
@@ -369,14 +379,17 @@
     "whatsapp": "WhatsApp",
     "email": "Barua pepe",
     "address": "Anwani",
-    "tin": "TIN (RRA)",
-    "momoCode": "Namba ya mfanyabiashara MTN MoMo Pay",
+    "tin": "NIF / RCCM / Id. Nat.",
+    "momoCode": "Namba ya mfanyabiashara MTN MoMo Pay (Rwanda)",
     "momoName": "Jina linaloonekana wakati wa kulipa",
     "airtelCode": "Namba ya mfanyabiashara Airtel Money",
     "pickup": "Ruhusu kuchukua dukani",
     "delivery": "Ruhusu kuletewa",
     "deliveryNote": "Eneo la kuletewa",
     "receiptFooter": "Maandishi ya chini ya risiti",
-    "categories": "Aina za bidhaa"
+    "categories": "Aina za bidhaa",
+    "mpesaCode": "Namba ya mfanyabiashara M-Pesa (Vodacom)",
+    "orangeCode": "Namba ya mfanyabiashara Orange Money",
+    "mobileMoneyHelp": "Njia za malipo zenye namba tu ndizo zinaonekana kwenye duka la mtandaoni."
   }
 }

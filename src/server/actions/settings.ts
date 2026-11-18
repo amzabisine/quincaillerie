@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/server/auth";
 import { updateSettings } from "@/server/services/settings";
-import { normalizeRwandaPhone } from "@/lib/utils";
+import { normalizePhone } from "@/lib/utils";
 import type { ActionResult } from "@/types";
 
 export async function saveSettings(_: ActionResult | null, f: FormData): Promise<ActionResult> {
@@ -12,14 +12,16 @@ export async function saveSettings(_: ActionResult | null, f: FormData): Promise
   const res = await updateSettings({
     shop_name: str("shop_name") || "Quincaillerie",
     tagline: str("tagline"),
-    phone: normalizeRwandaPhone(str("phone")) ?? (str("phone") || null),
-    whatsapp: normalizeRwandaPhone(str("whatsapp")) ?? (str("whatsapp") || null),
+    phone: normalizePhone(str("phone")) ?? (str("phone") || null),
+    whatsapp: normalizePhone(str("whatsapp")) ?? (str("whatsapp") || null),
     email: str("email") || null,
     address: str("address"),
     tin: str("tin") || null,
     momo_code: str("momo_code") || null,
     momo_name: str("momo_name") || null,
     airtel_code: str("airtel_code") || null,
+    mpesa_code: str("mpesa_code") || null,
+    orange_code: str("orange_code") || null,
     pickup_enabled: f.get("pickup_enabled") === "on",
     delivery_enabled: f.get("delivery_enabled") === "on",
     delivery_note: str("delivery_note"),

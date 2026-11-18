@@ -6,11 +6,11 @@ import { requireStaff } from "@/server/auth";
 import { getOrder } from "@/server/services/orders";
 import { getShopSettings } from "@/server/services/settings";
 import { confirmPayment, setOrderStatus } from "@/server/actions/orders";
-import { formatQty, formatRWF, whatsappLink } from "@/lib/utils";
+import { formatQty, formatMoney, whatsappLink } from "@/lib/utils";
 import { CompleteOrderForm } from "@/components/admin/CompleteOrderForm";
 import { DeliveryFeeForm } from "@/components/admin/DeliveryFeeForm";
 import { Badge, Card, PageTitle, buttonClass } from "@/components/ui";
-import type { PaymentMethod } from "@/types";
+import { methodForOnlinePayment } from "@/lib/payments";
 
 export default async function OrderAdminPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -22,9 +22,9 @@ export default async function OrderAdminPage({ params }: { params: Promise<{ id:
   const isDelivery = o.fulfilment === "delivery";
   const feePending = isDelivery && !o.delivery_fee_set;
   const msg = isDelivery && o.delivery_fee_set
-    ? t("orders.feeMessage", { name: o.customer_name, code: o.code, fee: formatRWF(o.delivery_fee), total: formatRWF(o.total), shop: settings?.shop_name ?? "" })
+    ? t("orders.feeMessage", { name: o.customer_name, code: o.code, fee: formatMoney(o.delivery_fee), total: formatMoney(o.total), shop: settings?.shop_name ?? "" })
     : t("orders.customerMessage", { name: o.customer_name, code: o.code, shop: settings?.shop_name ?? "" });
-  const defaultMethod: PaymentMethod = o.payment_method === "momo_code" ? "momo" : o.payment_method === "airtel_code" ? "airtel" : "cash";
+  const defaultMethod = methodForOnlinePayment(o.payment_method);
 
   return (
     <div className="grid gap-5 max-w-3xl">
@@ -43,19 +43,19 @@ export default async function OrderAdminPage({ params }: { params: Promise<{ id:
         </div>
         {o.address && <p>{t("cart.address")}: {o.address}</p>}
         {o.note && <p className="italic">“{o.note}”</p>}
-        <p>{t("cart.payment")}: {o.payment_method === "momo_code" ? t("cart.payMomo") : o.payment_method === "airtel_code" ? t("cart.payAirtel") : t("cart.payOnCollect")}
+        <p>{t("cart.payment")}: {t(`cart.pay.${o.payment_method}`)}
           {o.payment_reference && <> · {t("orders.paymentRef")}: <strong>{o.payment_reference}</strong></>}</p>
       </Card>
 
       <ul className="divide-y divide-steel-950/8 rounded-lg bg-white ring-1 ring-steel-950/8 text-sm">
         {o.order_items.map((i: any) => (
-          <li key={i.id} className="flex justify-between gap-3 p-3"><span>{i.product_name} · {formatQty(i.quantity)} {t(`units.${i.unit}`)}</span><span className="font-semibold">{formatRWF(i.line_total)}</span></li>
+          <li key={i.id} className="flex justify-between gap-3 p-3"><span>{i.product_name} · {formatQty(i.quantity)} {t(`units.${i.unit}`)}</span><span className="font-semibold">{formatMoney(i.line_total)}</span></li>
         ))}
         {isDelivery && (
           <li className="flex justify-between p-3"><span>{t("cart.deliveryFee")}</span>
-            <span className={feePending ? "font-semibold text-danger" : undefined}>{feePending ? t("cart.feeToConfirm") : formatRWF(o.delivery_fee)}</span></li>
+            <span className={feePending ? "font-semibold text-danger" : undefined}>{feePending ? t("cart.feeToConfirm") : formatMoney(o.delivery_fee)}</span></li>
         )}
-        <li className="flex justify-between p-3 text-base font-bold"><span>{t("common.total")}</span><span>{formatRWF(o.total)}</span></li>
+        <li className="flex justify-between p-3 text-base font-bold"><span>{t("common.total")}</span><span>{formatMoney(o.total)}</span></li>
       </ul>
 
       {open && (

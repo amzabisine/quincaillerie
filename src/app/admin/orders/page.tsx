@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { requireStaff } from "@/server/auth";
 import { listOrders } from "@/server/services/orders";
-import { cn, formatRWF } from "@/lib/utils";
+import { cn, formatMoney } from "@/lib/utils";
 import { OrdersLive } from "@/components/admin/OrdersLive";
 import { Badge, Card, PageTitle } from "@/components/ui";
 
@@ -32,7 +32,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
                 <Badge tone={o.payment_status === "confirmed" ? "ok" : o.payment_status === "claimed" ? "warn" : "muted"}>{t(`order.payment.${o.payment_status}`)}</Badge>
                 <span className="text-steel-600 text-sm">{t(`cart.${o.fulfilment}`)}</span>
                 {o.fulfilment === "delivery" && !o.delivery_fee_set && o.status !== "cancelled" && <Badge tone="danger">{t("orders.feeToSet")}</Badge>}
-                <span className="ml-auto font-bold">{formatRWF(o.total)}</span>
+                <span className="ml-auto font-bold">{formatMoney(o.total)}</span>
               </Link>
             </li>
           ))}

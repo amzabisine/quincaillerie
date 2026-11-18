@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Package } from "lucide-react";
-import { formatRWF } from "@/lib/utils";
+import { formatMoney } from "@/lib/utils";
 import { Badge } from "@/components/ui";
 import { AddToCart } from "./AddToCart";
 import type { CatalogProduct } from "@/types";
@@ -23,7 +23,7 @@ export async function ProductCard({ product }: { product: CatalogProduct }) {
         <Link href={`/products/${product.id}`} className="font-semibold leading-snug hover:underline line-clamp-2">{product.name}</Link>
         {main && (
           <p>
-            <span className="font-display text-lg font-bold [font-stretch:85%]">{formatRWF(main.retail_price)}</span>
+            <span className="font-display text-lg font-bold [font-stretch:85%]">{formatMoney(main.retail_price)}</span>
             <span className="text-sm text-steel-600"> {t("store.perUnit", { unit: t(`units.${main.unit}`) })}</span>
           </p>
         )}

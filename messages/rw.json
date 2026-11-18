@@ -59,7 +59,7 @@
     "yourDetails": "Amakuru yawe",
     "fullName": "Amazina yombi",
     "phone": "Nimero ya telefoni",
-    "phoneHint": "Urugero: 0788 123 456",
+    "phoneHint": "Urugero: 0991 234 567 cyangwa +250 788 123 456",
     "fulfilment": "Urifuza kubibona ute?",
     "pickup": "Kubifatira ku iduka",
     "delivery": "Kubikugezaho",
@@ -71,15 +71,23 @@
     "addressPlaceholder": "Umurenge, umuhanda, ahantu hazwi",
     "note": "Ubutumwa ku iduka (si ngombwa)",
     "payment": "Kwishyura",
-    "payMomo": "MTN MoMo",
-    "payAirtel": "Airtel Money",
-    "payOnCollect": "Kwishyura ubifashe cyangwa ubigejejweho",
-    "payInstructionsMomo": "Kanda *182*8*1*{code}# wishyure {amount} kuri {name}. Hanyuma wandike nimero y’igikorwa hepfo.",
-    "payInstructionsAirtel": "Ishyura {amount} kuri kode y’umucuruzi ya Airtel Money {code}. Hanyuma wandike nimero y’igikorwa hepfo.",
     "transactionId": "Nimero y’igikorwa (transaction ID)",
     "transactionHint": "Ushobora no kuyitanga nyuma uhamagaye iduka.",
     "placeOrder": "Ohereza ibyo utumije",
-    "placing": "Biroherezwa…"
+    "placing": "Biroherezwa…",
+    "pay": {
+      "mpesa_code": "M-Pesa (Vodacom)",
+      "orange_code": "Orange Money",
+      "airtel_code": "Airtel Money",
+      "momo_code": "MTN MoMo (Rwanda)",
+      "on_collect": "Kwishyura ubifashe cyangwa ubigejejweho"
+    },
+    "payInstructions": {
+      "mpesa_code": "Ishyura {amount} kuri nimero y’umucuruzi ya M-Pesa {code} ({name}). Hanyuma wandike nimero y’igikorwa hepfo.",
+      "orange_code": "Ishyura {amount} kuri kode y’umucuruzi ya Orange Money {code} ({name}). Hanyuma wandike nimero y’igikorwa hepfo.",
+      "airtel_code": "Ishyura {amount} kuri kode y’umucuruzi ya Airtel Money {code}. Hanyuma wandike nimero y’igikorwa hepfo.",
+      "momo_code": "Kanda *182*8*1*{code}# wishyure {amount} kuri {name}. Hanyuma wandike nimero y’igikorwa hepfo."
+    }
   },
   "order": {
     "title": "Ibyatumijwe {code}",
@@ -150,10 +158,12 @@
   },
   "methods": {
     "cash": "Amafaranga mu ntoki",
-    "momo": "MTN MoMo",
+    "momo": "MTN MoMo (Rwanda)",
     "airtel": "Airtel Money",
     "bank": "Banki",
-    "credit": "Ideni"
+    "credit": "Ideni",
+    "mpesa": "M-Pesa",
+    "orange": "Orange Money"
   },
   "dashboard": {
     "todaySales": "Ibyagurishijwe uyu munsi",
@@ -190,7 +200,7 @@
       "partial": "Yishyuye igice",
       "later": "Azishyura nyuma"
     },
-    "amountPaidNow": "Amafaranga yishyuwe ubu (RWF)",
+    "amountPaidNow": "Amafaranga yishyuwe ubu ($)",
     "cashReceived": "Amafaranga yakiriwe (yo kugarura)",
     "paidNow": "Yishyuwe ubu",
     "remaining": "Asigaye (yongerwa ku ideni)",
@@ -240,7 +250,7 @@
     "product": "Igicuruzwa",
     "unit": "Igipimo",
     "quantity": "Ingano",
-    "unitCost": "Ikiguzi kuri buri gipimo (RWF)",
+    "unitCost": "Ikiguzi kuri buri gipimo ($)",
     "supplier": "Uwaranguriwe",
     "adjust": "Kosora ububiko",
     "type": "Impamvu",
@@ -276,7 +286,7 @@
     "done": "Ibyarangiye",
     "customerMessage": "Muraho {name}, ku byo mwatumije {code} kuri {shop}: ",
     "debtNote": "Amafaranga asigaye yongerwa ku ideni ry’uyu mukiriya, hakoreshejwe nimero ya telefoni iri ku byatumijwe.",
-    "setDeliveryFee": "Amafaranga yo kugeza kuri iyi aderesi (RWF)",
+    "setDeliveryFee": "Amafaranga yo kugeza kuri iyi aderesi ($)",
     "saveFee": "Bika igiciro",
     "feeRequired": "Shyiramo amafaranga yo kugeza ukurikije aho umukiriya atuye mbere yo kurangiza iyi komande. Shyiramo 0 niba ari ubuntu.",
     "feeInvalid": "Shyiramo umubare nyawo (0 cyangwa urenga).",
@@ -304,7 +314,7 @@
     "title": "Abakiriya n’amadeni",
     "add": "Ongeraho umukiriya",
     "type": "Urwego rw’igiciro",
-    "creditLimit": "Ideni ntarengwa (RWF)",
+    "creditLimit": "Ideni ntarengwa ($)",
     "creditLimitHint": "0 bisobanura ko nta mbibi.",
     "balance": "Arimo",
     "receivePayment": "Akira ubwishyu",
@@ -369,14 +379,17 @@
     "whatsapp": "WhatsApp",
     "email": "Imeyili",
     "address": "Aderesi",
-    "tin": "TIN (RRA)",
-    "momoCode": "Kode y’umucuruzi ya MTN MoMo Pay",
+    "tin": "NIF / RCCM / Id. Nat.",
+    "momoCode": "Kode y’umucuruzi ya MTN MoMo Pay (Rwanda)",
     "momoName": "Izina rigaragara mu kwishyura",
     "airtelCode": "Kode y’umucuruzi ya Airtel Money",
     "pickup": "Emera kubifatira ku iduka",
     "delivery": "Emera kubigeza ku bakiriya",
     "deliveryNote": "Aho tubigeza",
     "receiptFooter": "Ibyandikwa hasi ku nyemezabwishyu",
-    "categories": "Ibyiciro"
+    "categories": "Ibyiciro",
+    "mpesaCode": "Nimero y’umucuruzi ya M-Pesa (Vodacom)",
+    "orangeCode": "Kode y’umucuruzi ya Orange Money",
+    "mobileMoneyHelp": "Uburyo bwo kwishyura bufite kode ni bwo bwonyine bugaragara mu iduka ryo kuri interineti."
   }
 }

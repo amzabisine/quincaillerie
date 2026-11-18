@@ -31,7 +31,7 @@ export function DeliveryFeeForm({ orderId, current, isSet }: { orderId: string; 
       {!isSet && <Notice>{t("orders.feeRequired")}</Notice>}
       <div className="flex items-end gap-2">
         <Field label={t("orders.setDeliveryFee")} htmlFor="delivery_fee">
-          <Input id="delivery_fee" type="number" min={0} step={100} inputMode="numeric" value={fee} onChange={(e) => setFee(e.target.value)} required />
+          <Input id="delivery_fee" type="number" min={0} step="0.01" inputMode="decimal" value={fee} onChange={(e) => setFee(e.target.value)} required />
         </Field>
         <Button type="submit" disabled={pending}>{t("orders.saveFee")}</Button>
       </div>

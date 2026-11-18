@@ -1,5 +1,8 @@
 export type Role = "owner" | "manager" | "cashier" | "storekeeper";
-export type PaymentMethod = "cash" | "momo" | "airtel" | "bank";
+/** momo = MTN MoMo (Rwanda), mpesa = Vodacom M-Pesa, orange = Orange Money */
+export type PaymentMethod = "cash" | "mpesa" | "orange" | "airtel" | "momo" | "bank";
+/** How an online customer said they would pay */
+export type OnlinePaymentMethod = "mpesa_code" | "orange_code" | "airtel_code" | "momo_code" | "on_collect";
 export type OrderStatus = "new" | "confirmed" | "ready" | "out_for_delivery" | "completed" | "cancelled";
 
 export interface StaffProfile {
@@ -28,6 +31,8 @@ export interface Settings {
   momo_code: string | null;
   momo_name: string | null;
   airtel_code: string | null;
+  mpesa_code: string | null;
+  orange_code: string | null;
   pickup_enabled: boolean;
   delivery_enabled: boolean;
   delivery_fee: number;

@@ -4,7 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { requireStaff } from "@/server/auth";
 import { listCustomers } from "@/server/services/customers";
 import { getPublicSettings } from "@/server/services/settings";
-import { formatRWF, whatsappLink } from "@/lib/utils";
+import { formatMoney, whatsappLink } from "@/lib/utils";
 import { NewCustomerForm } from "@/components/admin/CustomerForms";
 import { RowLink } from "@/components/admin/RowLink";
 import { Badge, Card, Input, PageTitle, Stat, buttonClass } from "@/components/ui";
@@ -19,7 +19,7 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
   return (
     <div className="grid gap-6">
       <PageTitle>{t("customers.title")}</PageTitle>
-      <div className="grid grid-cols-2 gap-3 max-w-md"><Stat label={t("dashboard.debtsTotal")} value={formatRWF(owed)} tone="danger" /></div>
+      <div className="grid grid-cols-2 gap-3 max-w-md"><Stat label={t("dashboard.debtsTotal")} value={formatMoney(owed)} tone="danger" /></div>
       <Card><h2 className="font-bold mb-3">{t("customers.add")}</h2><NewCustomerForm /></Card>
       <form className="flex flex-wrap gap-2">
         <Input name="q" defaultValue={q} placeholder={t("common.search")} className="max-w-xs" aria-label={t("common.search")} />
@@ -33,9 +33,9 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
               <Link href={`/admin/customers/${c.id}`} className="font-semibold hover:underline">{c.name}</Link>
               <span className="text-steel-600">{c.phone}</span>
               {c.type === "wholesale" && <Badge tone="info">{t("pos.wholesale")}</Badge>}
-              <span className={`ml-auto font-bold ${c.balance > 0 ? "text-danger" : "text-steel-400"}`}>{formatRWF(c.balance)}</span>
+              <span className={`ml-auto font-bold ${c.balance > 0 ? "text-danger" : "text-steel-400"}`}>{formatMoney(c.balance)}</span>
               {c.balance > 0 && c.phone && (
-                <a href={whatsappLink(c.phone, t("customers.reminderMessage", { name: c.name, shop: s.shop_name, amount: formatRWF(c.balance) }))}
+                <a href={whatsappLink(c.phone, t("customers.reminderMessage", { name: c.name, shop: s.shop_name, amount: formatMoney(c.balance) }))}
                   target="_blank" rel="noopener noreferrer" className={buttonClass("secondary", "h-8 px-3")}>
                   <MessageCircle size={14} aria-hidden /> {t("customers.remind")}
                 </a>

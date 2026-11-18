@@ -5,8 +5,8 @@ import { fail, ok, type Result } from "./result";
 import type { Settings } from "@/types";
 
 const FALLBACK: Settings = {
-  shop_name: "Quincaillerie", tagline: "", phone: null, whatsapp: null, email: null, address: "Rubavu",
-  momo_code: null, momo_name: null, airtel_code: null, pickup_enabled: true, delivery_enabled: true,
+  shop_name: "ETS PACIFIQUE", tagline: "", phone: null, whatsapp: null, email: null, address: "Bukavu",
+  momo_code: null, momo_name: null, airtel_code: null, mpesa_code: null, orange_code: null, pickup_enabled: true, delivery_enabled: true,
   delivery_fee: 0, delivery_note: "",
 };
 

@@ -6,6 +6,7 @@ import { requireStaff } from "@/server/auth";
 import * as products from "@/server/services/products";
 import { canSeeProfit } from "@/lib/permissions";
 import { UNITS } from "@/lib/units";
+import { roundMoney } from "@/lib/utils";
 import type { ActionResult } from "@/types";
 
 interface UnitRow {
@@ -57,8 +58,8 @@ export async function saveProduct(productId: string | null, _: ActionResult | nu
   if (product.name.length < 2) return { ok: false, error: "Enter a product name" };
 
   const saved = await products.saveProduct(productId, product, units.map((u) => ({
-    id: u.id, unit: u.unit, factor: u.factor, retail_price: Math.round(u.retail_price),
-    wholesale_price: u.wholesale_price ? Math.round(u.wholesale_price) : null,
+    id: u.id, unit: u.unit, factor: u.factor, retail_price: roundMoney(u.retail_price),
+    wholesale_price: u.wholesale_price ? roundMoney(u.wholesale_price) : null,
     barcode: u.barcode?.trim() || null, is_default: u.is_default, show_online: u.show_online,
   })));
   if (!saved.ok) return saved;

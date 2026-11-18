@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { CheckCircle2 } from "lucide-react";
 import { trackOrder } from "@/server/services/catalog";
-import { formatQty, formatRWF } from "@/lib/utils";
+import { formatQty, formatMoney } from "@/lib/utils";
 import { Badge, Notice, buttonClass } from "@/components/ui";
 import type { OrderStatus } from "@/types";
 
@@ -57,14 +57,14 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
         {order.items.map((i, idx) => (
           <li key={idx} className="flex justify-between gap-3 p-3">
             <span>{i.name} · {formatQty(i.quantity)} {t(`units.${i.unit}`)}</span>
-            <span className="font-semibold">{formatRWF(i.line_total)}</span>
+            <span className="font-semibold">{formatMoney(i.line_total)}</span>
           </li>
         ))}
         {order.fulfilment === "delivery" && (
           <li className="flex justify-between p-3"><span>{t("cart.deliveryFee")}</span>
-            <span>{order.delivery_fee_set === false ? t("cart.feeToConfirm") : formatRWF(order.delivery_fee)}</span></li>
+            <span>{order.delivery_fee_set === false ? t("cart.feeToConfirm") : formatMoney(order.delivery_fee)}</span></li>
         )}
-        <li className="flex justify-between p-3 text-base font-bold"><span>{t("common.total")}</span><span>{formatRWF(order.total)}</span></li>
+        <li className="flex justify-between p-3 text-base font-bold"><span>{t("common.total")}</span><span>{formatMoney(order.total)}</span></li>
       </ul>
     </div>
   );

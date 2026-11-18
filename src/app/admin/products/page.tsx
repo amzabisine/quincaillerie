@@ -5,7 +5,7 @@ import { requireStaff } from "@/server/auth";
 import { canSeeProfit } from "@/lib/permissions";
 import { listProducts } from "@/server/services/products";
 import { getCategories } from "@/server/services/catalog";
-import { categoryName, cn, formatQty, formatRWF } from "@/lib/utils";
+import { categoryName, cn, formatQty, formatMoney } from "@/lib/utils";
 import { Badge, Card, Input, PageTitle, buttonClass } from "@/components/ui";
 
 export default async function ProductsAdmin({ searchParams }: { searchParams: Promise<{ q?: string; low?: string }> }) {
@@ -45,9 +45,9 @@ export default async function ProductsAdmin({ searchParams }: { searchParams: Pr
                     <td className="p-3"><Link href={`/admin/products/${p.id}`} className="font-semibold hover:underline">{p.name}</Link>{p.sku && <span className="block text-xs text-steel-600">{p.sku}</span>}</td>
                     <td className="p-3">{cat ? categoryName(cat, locale) : "—"}</td>
                     <td className={cn("p-3 text-right font-semibold whitespace-nowrap", isLow && "text-danger")}>{formatQty(p.stock)} {t(`units.${p.base_unit}`)}</td>
-                    <td className="p-3 text-right whitespace-nowrap">{def ? `${formatRWF(def.retail_price)} / ${t(`units.${def.unit}`)}` : "—"}</td>
-                    {showCost && <td className="p-3 text-right whitespace-nowrap">{formatRWF(p.cost_price)}</td>}
-                    {showCost && <td className="p-3 text-right whitespace-nowrap">{formatRWF(Number(p.stock) * Number(p.cost_price))}</td>}
+                    <td className="p-3 text-right whitespace-nowrap">{def ? `${formatMoney(def.retail_price)} / ${t(`units.${def.unit}`)}` : "—"}</td>
+                    {showCost && <td className="p-3 text-right whitespace-nowrap">{formatMoney(p.cost_price)}</td>}
+                    {showCost && <td className="p-3 text-right whitespace-nowrap">{formatMoney(Number(p.stock) * Number(p.cost_price))}</td>}
                     <td className="p-3 text-right space-x-1">
                       {!p.is_active && <Badge>{t("products.inactive")}</Badge>}
                       <Link href={`/admin/stock?product=${p.id}`} className="text-xs font-semibold underline">{t("admin.stock")}</Link>

@@ -1,5 +1,6 @@
 "use client";
 
+import { roundMoney } from "@/lib/utils";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export interface CartItem {
@@ -44,7 +45,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const value: CartContextValue = {
     items,
     count: items.length,
-    subtotal: items.reduce((s, i) => s + Math.round(i.price * i.quantity), 0),
+    subtotal: roundMoney(items.reduce((s, i) => s + roundMoney(i.price * i.quantity), 0)),
     add: (item) => {
       const existing = items.find((i) => i.unitId === item.unitId);
       save(existing ? items.map((i) => (i.unitId === item.unitId ? { ...i, quantity: i.quantity + item.quantity } : i)) : [...items, item]);

@@ -6,6 +6,7 @@ import * as orders from "@/server/services/orders";
 import { findCustomerIdByPhone } from "@/server/services/customers";
 import { completeSale } from "./sales";
 import { createCustomer } from "./customers";
+import { roundMoney } from "@/lib/utils";
 import type { ActionResult, OrderStatus, PaymentMethod } from "@/types";
 
 export async function setOrderStatus(orderId: string, status: OrderStatus) {
@@ -24,7 +25,7 @@ export async function confirmPayment(orderId: string) {
 /** Staff set the delivery fee for the customer's location. The database recalculates the total. */
 export async function setDeliveryFee(orderId: string, fee: number): Promise<ActionResult> {
   await requireStaff(["owner", "manager", "cashier"]);
-  const res = await orders.setDeliveryFee(orderId, Math.max(0, Math.round(fee)));
+  const res = await orders.setDeliveryFee(orderId, Math.max(0, roundMoney(fee)));
   if (!res.ok) return res;
   revalidatePath("/admin/orders", "layout");
   return { ok: true };
@@ -44,9 +45,9 @@ export async function completeOrder(
   if (!order) return { ok: false, error: "Order not found" };
   if (order.fulfilment === "delivery" && !order.delivery_fee_set) return { ok: false, error: "Set the delivery fee before completing this order" };
 
-  const amountPaid = Math.max(0, Math.min(order.total, Math.round(input.amountPaid)));
+  const amountPaid = Math.max(0, Math.min(Number(order.total), roundMoney(input.amountPaid)));
   let customerId: string | null = null;
-  if (amountPaid < order.total) {
+  if (amountPaid < Number(order.total)) {
     customerId = await findCustomerIdByPhone(order.customer_phone);
     if (!customerId) {
       const created = await createCustomer({ name: order.customer_name, phone: order.customer_phone, type: "retail" });

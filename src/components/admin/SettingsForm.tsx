@@ -26,9 +26,12 @@ export function SettingsForm({ settings: s }: { settings: Settings }) {
         {text("receipt_footer", t("receiptFooter"))}
       </Card>
       <Card className="grid gap-4 sm:grid-cols-2">
+        {text("mpesa_code", t("mpesaCode"))}
+        {text("orange_code", t("orangeCode"))}
+        {text("airtel_code", t("airtelCode"))}
         {text("momo_code", t("momoCode"))}
         {text("momo_name", t("momoName"))}
-        {text("airtel_code", t("airtelCode"))}
+        <p className="sm:col-span-2 text-xs text-steel-600">{t("mobileMoneyHelp")}</p>
       </Card>
       <Card className="grid gap-4 sm:grid-cols-2">
         <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="pickup_enabled" defaultChecked={s.pickup_enabled} className="h-4 w-4" /> {t("pickup")}</label>

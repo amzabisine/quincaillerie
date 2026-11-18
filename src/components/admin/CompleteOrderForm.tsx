@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { completeOrder } from "@/server/actions/orders";
-import { formatRWF } from "@/lib/utils";
+import { formatMoney, roundMoney } from "@/lib/utils";
 import { Button, Notice } from "@/components/ui";
 import { PaymentOptions, computePayment, initialPayment, type PaymentState } from "./PaymentOptions";
 import type { PaymentMethod } from "@/types";
@@ -21,7 +21,7 @@ export function CompleteOrderForm({ orderId, total, defaultMethod, defaultRefere
 
   function submit() {
     setError("");
-    if (partialInvalid) { setError(t("pos.partialInvalid", { max: formatRWF(total - 1) })); return; }
+    if (partialInvalid) { setError(t("pos.partialInvalid", { max: formatMoney(roundMoney(total - 0.01)) })); return; }
     startTransition(async () => {
       const res = await completeOrder(orderId, { method: payment.method, amountPaid: paid, reference: payment.reference });
       if (!res.ok) { setError(res.error ?? t("common.error")); return; }

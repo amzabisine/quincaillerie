@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { createClient } from "@/server/db/server";
 import { fail, ok, type Result } from "./result";
-import type { CatalogProduct, Category, OrderStatus } from "@/types";
+import type { CatalogProduct, Category, OnlinePaymentMethod, OrderStatus } from "@/types";
 
 // Public online store. Reads only the public views (no cost prices, no exact stock).
 
@@ -37,7 +37,7 @@ export interface PlaceOrderParams {
   fulfilment: "pickup" | "delivery";
   address: string;
   note: string;
-  paymentMethod: "momo_code" | "airtel_code" | "on_collect";
+  paymentMethod: OnlinePaymentMethod;
   paymentReference: string;
   items: { unit_id: string; quantity: number }[];
 }
