@@ -105,3 +105,18 @@ export interface ActionResult {
   error?: string;
   id?: string;
 }
+
+export type ExpenseCategory = "rent" | "salaries" | "transport" | "utilities" | "taxes" | "communication" | "repairs" | "other";
+
+/** A running cost of the shop (owner and managers only). */
+export interface Expense {
+  id: string;
+  spent_on: string;          // "YYYY-MM-DD", Bukavu date
+  category: ExpenseCategory;
+  amount: number;
+  method: PaymentMethod;
+  note: string;
+  created_by: string | null;
+  created_at: string;
+  by?: { full_name: string } | null;
+}

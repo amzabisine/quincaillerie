@@ -27,7 +27,7 @@ One Next.js app, three layers. `npm run check:layers` enforces the import rules.
 Inside `src/server/`:
 - `db/`: Supabase clients (`server.ts` as the logged-in user, `admin.ts` service role, `session.ts` for `src/proxy.ts`).
 - `auth.ts`: `getStaff`, `requireStaff`, `signIn`, `signOut`.
-- `services/<area>.ts`: one file per area (`catalog`, `settings`, `products`, `stock`, `sales`, `orders`, `customers`, `staff`, `reports`). Plain async functions: reads return data, writes return `Result<T>` (`{ ok, data } | { ok: false, error }`). No `FormData`, no `revalidatePath`, no redirects.
+- `services/<area>.ts`: one file per area (`catalog`, `settings`, `products`, `stock`, `sales`, `orders`, `customers`, `staff`, `expenses`, `reports`). Plain async functions: reads return data, writes return `Result<T>` (`{ ok, data } | { ok: false, error }`). No `FormData`, no `revalidatePath`, no redirects.
 - `actions/<area>.ts`: `"use server"` endpoints for the UI. They check the role (`requireStaff`), read and validate `FormData`, call a service, then `revalidatePath`/`redirect`.
 
 New feature checklist: SQL migration (if the rules need the database) -> service function -> server action -> page/component.
@@ -55,10 +55,12 @@ Only exception in the browser: `src/lib/supabase-browser.ts`, used for Realtime 
 
 Stage 1 done: store, cart, checkout (mobile money merchant code with transaction ID, or pay on collect), order tracking, counter with multi-unit and wholesale pricing, discounts, credit, receipts (print + WhatsApp), products with units and barcodes, stock in/adjust/count/history, online order handling with live alerts, customers and debt payments, reports, staff, settings.
 
+Stage 2 done so far: **expenses** (`0007_expenses.sql`): owner and managers record and correct expenses, only the owner deletes (RLS). `sales_report` returns `expenses_total` and `net_profit` (gross profit − expenses, by expense date in Bukavu time); `monthly_summary(p_months)` gives sales, gross profit, expenses and net profit per month. Cashiers and storekeepers see none of it. Reports page periods: `?period=week`, `?month=YYYY-MM`, `?from=&to=`, default today; the active period is highlighted and spelled out.
+
 ## Stage 2 roadmap
 
 1. **Suppliers**: `suppliers` table, purchase orders, what the shop owes each supplier, supplier payments, price history. Replace the free-text `stock_movements.supplier`.
-2. **Expenses**: rent, salaries, transport, electricity; include in a net profit report.
+2. ~~**Expenses**~~: done (see Status).
 3. **Cash drawer sessions**: open/close shift per cashier with counted cash vs expected cash.
 4. **Split payments** at the counter (part cash, part M-Pesa). `complete_sale` currently takes one payment; extend `p_payment` to an array.
 5. **Price change history** and bulk price update by category.

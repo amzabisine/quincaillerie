@@ -10,7 +10,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const staff = await requireStaff();
   const [t, s, count] = await Promise.all([getTranslations(), getPublicSettings(), countNewOrders()]);
-  const keys = ["dashboard", "pos", "orders", "sales", "products", "stock", "customers", "reports", "staff", "settings", "viewStore"];
+  const keys = ["dashboard", "pos", "orders", "sales", "products", "stock", "customers", "expenses", "reports", "staff", "settings", "viewStore"];
   const labels = Object.fromEntries(keys.map((k) => [k, t(`admin.${k}`)]));
 
   return (

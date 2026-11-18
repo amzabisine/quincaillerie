@@ -148,7 +148,8 @@
     "staff": "Personnel",
     "settings": "Paramètres",
     "logout": "Se déconnecter",
-    "viewStore": "Voir la boutique en ligne"
+    "viewStore": "Voir la boutique en ligne",
+    "expenses": "Dépenses"
   },
   "roles": {
     "owner": "Propriétaire",
@@ -174,7 +175,8 @@
     "lowStock": "Stock faible",
     "noLowStock": "Tous les produits ont assez de stock.",
     "byMethod": "Argent reçu aujourd’hui",
-    "noNewOrders": "Aucune nouvelle commande."
+    "noNewOrders": "Aucune nouvelle commande.",
+    "netProfitMonth": "Bénéfice net du mois"
   },
   "pos": {
     "search": "Rechercher un produit, un code ou un code-barres",
@@ -344,7 +346,17 @@
     "debtsTotal": "Total des dettes clients",
     "byMethod": "Argent reçu par mode",
     "revenue": "Chiffre d’affaires",
-    "show": "Afficher"
+    "show": "Afficher",
+    "custom": "Période personnalisée",
+    "showing": "Vous regardez",
+    "netProfit": "Bénéfice net",
+    "profitTitle": "Bénéfice de la période",
+    "costOfGoods": "Coût des marchandises vendues",
+    "expenses": "Dépenses",
+    "expensesByCategory": "Dépenses par catégorie",
+    "byMonth": "Mois par mois",
+    "byMonthHelp": "Les 12 derniers mois. Bénéfice net = bénéfice brut − dépenses. Cliquez sur un mois pour voir le détail.",
+    "monthColumn": "Mois"
   },
   "staff": {
     "title": "Personnel",
@@ -391,5 +403,36 @@
     "mpesaCode": "Numéro marchand M-Pesa (Vodacom)",
     "orangeCode": "Code marchand Orange Money",
     "mobileMoneyHelp": "Seuls les moyens de paiement avec un code apparaissent dans la boutique en ligne."
+  },
+  "expenses": {
+    "title": "Dépenses",
+    "add": "Ajouter une dépense",
+    "category": "Catégorie",
+    "chooseCategory": "Choisir…",
+    "amount": "Montant ($)",
+    "paidWith": "Payé par",
+    "notePlaceholder": "Ex. : loyer de novembre, transport ciment depuis Goma",
+    "by": "Enregistré par",
+    "none": "Aucune dépense pour cette période.",
+    "monthTotal": "Total des dépenses du mois",
+    "byCategory": "Par catégorie",
+    "seeProfit": "Voir le bénéfice net de ce mois →",
+    "previousMonth": "Mois précédent",
+    "nextMonth": "Mois suivant",
+    "thisMonth": "Revenir à ce mois",
+    "delete": "Supprimer cette dépense",
+    "deleteConfirm": "Supprimer cette dépense ?",
+    "deleteHelp": "Seul le propriétaire peut supprimer une dépense. Pour une erreur de montant ou de date, corrigez-la plutôt ci-dessus.",
+    "recordedBy": "Enregistrée par {name} le {date}",
+    "categories": {
+      "rent": "Loyer",
+      "salaries": "Salaires",
+      "transport": "Transport",
+      "utilities": "Électricité et eau",
+      "taxes": "Taxes et frais",
+      "communication": "Téléphone et internet",
+      "repairs": "Réparations et entretien",
+      "other": "Autre"
+    }
   }
 }

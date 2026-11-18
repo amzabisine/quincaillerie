@@ -148,7 +148,8 @@
     "staff": "Staff",
     "settings": "Settings",
     "logout": "Log out",
-    "viewStore": "View online store"
+    "viewStore": "View online store",
+    "expenses": "Expenses"
   },
   "roles": {
     "owner": "Owner",
@@ -174,7 +175,8 @@
     "lowStock": "Low stock",
     "noLowStock": "All products have enough stock.",
     "byMethod": "Money received today",
-    "noNewOrders": "No new orders."
+    "noNewOrders": "No new orders.",
+    "netProfitMonth": "Net profit this month"
   },
   "pos": {
     "search": "Search product, code or barcode",
@@ -344,7 +346,17 @@
     "debtsTotal": "Total customers owe",
     "byMethod": "Money received by method",
     "revenue": "Revenue",
-    "show": "Show"
+    "show": "Show",
+    "custom": "Custom period",
+    "showing": "You are viewing",
+    "netProfit": "Net profit",
+    "profitTitle": "Profit for the period",
+    "costOfGoods": "Cost of goods sold",
+    "expenses": "Expenses",
+    "expensesByCategory": "Expenses by category",
+    "byMonth": "Month by month",
+    "byMonthHelp": "The last 12 months. Net profit = gross profit − expenses. Click a month to see the details.",
+    "monthColumn": "Month"
   },
   "staff": {
     "title": "Staff",
@@ -391,5 +403,36 @@
     "mpesaCode": "M-Pesa merchant number (Vodacom)",
     "orangeCode": "Orange Money merchant code",
     "mobileMoneyHelp": "Only payment methods with a code are shown in the online store."
+  },
+  "expenses": {
+    "title": "Expenses",
+    "add": "Add an expense",
+    "category": "Category",
+    "chooseCategory": "Choose…",
+    "amount": "Amount ($)",
+    "paidWith": "Paid with",
+    "notePlaceholder": "E.g. November rent, cement transport from Goma",
+    "by": "Recorded by",
+    "none": "No expenses for this period.",
+    "monthTotal": "Total expenses this month",
+    "byCategory": "By category",
+    "seeProfit": "See this month's net profit →",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "thisMonth": "Back to this month",
+    "delete": "Delete this expense",
+    "deleteConfirm": "Delete this expense?",
+    "deleteHelp": "Only the owner can delete an expense. If the amount or date is wrong, correct it above instead.",
+    "recordedBy": "Recorded by {name} on {date}",
+    "categories": {
+      "rent": "Rent",
+      "salaries": "Salaries",
+      "transport": "Transport",
+      "utilities": "Electricity and water",
+      "taxes": "Taxes and fees",
+      "communication": "Phone and internet",
+      "repairs": "Repairs and maintenance",
+      "other": "Other"
+    }
   }
 }
