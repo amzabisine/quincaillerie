@@ -310,7 +310,8 @@
     "credit": "Mkopo",
     "none": "Hakuna mauzo bado.",
     "newSale": "Mauzo mapya",
-    "receiptMessage": "Risiti {number} kutoka {shop}. Jumla: {total}. Asante!"
+    "receiptMessage": "Risiti {number} kutoka {shop}. Jumla: {total}. Asante!",
+    "phoneLabel": "Simu"
   },
   "customers": {
     "title": "Wateja na madeni",
@@ -356,7 +357,25 @@
     "expensesByCategory": "Matumizi kwa aina",
     "byMonth": "Mwezi kwa mwezi",
     "byMonthHelp": "Miezi 12 iliyopita. Faida halisi = faida ghafi − matumizi. Bofya mwezi kuona maelezo.",
-    "monthColumn": "Mwezi"
+    "monthColumn": "Mwezi",
+    "export": {
+      "excel": "Excel",
+      "pdf": "PDF",
+      "reportTitle": "Ripoti ya biashara",
+      "exportedBy": "Imetolewa na {name} tarehe {date}",
+      "keyFigures": "Takwimu muhimu",
+      "sheetSummary": "Muhtasari",
+      "sheetSales": "Mauzo",
+      "sheetExpenses": "Matumizi",
+      "sheetProducts": "Bidhaa zilizouzwa",
+      "sheetMonths": "Mwezi kwa mwezi",
+      "channel": "Njia",
+      "paid": "Imelipwa",
+      "status": "Hali",
+      "completed": "Imekamilika",
+      "unit": "Kipimo",
+      "page": "Ukurasa {n} / {total}"
+    }
   },
   "staff": {
     "title": "Wafanyakazi",

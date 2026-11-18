@@ -310,7 +310,8 @@
     "credit": "Ideni",
     "none": "Nta byagurishijwe biraba.",
     "newSale": "Igurisha rishya",
-    "receiptMessage": "Inyemezabwishyu {number} ya {shop}. Igiteranyo: {total}. Murakoze!"
+    "receiptMessage": "Inyemezabwishyu {number} ya {shop}. Igiteranyo: {total}. Murakoze!",
+    "phoneLabel": "Tel."
   },
   "customers": {
     "title": "Abakiriya n’amadeni",
@@ -356,7 +357,25 @@
     "expensesByCategory": "Amafaranga yasohotse ku bwoko",
     "byMonth": "Ukwezi ku kwezi",
     "byMonthHelp": "Amezi 12 ashize. Inyungu nyayo = inyungu mbumbe − amafaranga yasohotse. Kanda ku kwezi urebe ibisobanuro.",
-    "monthColumn": "Ukwezi"
+    "monthColumn": "Ukwezi",
+    "export": {
+      "excel": "Excel",
+      "pdf": "PDF",
+      "reportTitle": "Raporo y’ubucuruzi",
+      "exportedBy": "Yakuweho na {name} ku wa {date}",
+      "keyFigures": "Imibare y’ingenzi",
+      "sheetSummary": "Incamake",
+      "sheetSales": "Ibyagurishijwe",
+      "sheetExpenses": "Ayasohotse",
+      "sheetProducts": "Ibicuruzwa byagurishijwe",
+      "sheetMonths": "Ukwezi ku kwezi",
+      "channel": "Inzira",
+      "paid": "Byishyuwe",
+      "status": "Uko bimeze",
+      "completed": "Byarangiye",
+      "unit": "Igipimo",
+      "page": "Urupapuro {n} / {total}"
+    }
   },
   "staff": {
     "title": "Abakozi",

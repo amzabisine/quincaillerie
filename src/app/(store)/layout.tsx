@@ -45,7 +45,7 @@ export default async function StoreLayout({ children }: { children: React.ReactN
           <ul className="grid gap-2">
             <li className="flex items-center gap-2"><MapPin size={15} aria-hidden /> {s.address}</li>
             {s.phone && <li><a href={`tel:${s.phone}`} className="flex items-center gap-2 hover:text-white"><Phone size={15} aria-hidden /> {s.phone}</a></li>}
-            {wa && <li><a href={whatsappLink(wa, "")} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white"><MessageCircle size={15} aria-hidden /> WhatsApp</a></li>}
+            {wa && <li><a href={whatsappLink(wa, "")} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white"><MessageCircle size={15} aria-hidden /> WhatsApp: {wa}</a></li>}
           </ul>
           <div className="sm:text-right">
             <Link href="/login" className="text-steel-400 hover:text-white">{t("nav.staffLogin")}</Link>

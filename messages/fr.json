@@ -310,7 +310,8 @@
     "credit": "Crédit",
     "none": "Aucune vente.",
     "newSale": "Nouvelle vente",
-    "receiptMessage": "Reçu {number} de {shop}. Total : {total}. Merci !"
+    "receiptMessage": "Reçu {number} de {shop}. Total : {total}. Merci !",
+    "phoneLabel": "Tél."
   },
   "customers": {
     "title": "Clients et crédits",
@@ -356,7 +357,25 @@
     "expensesByCategory": "Dépenses par catégorie",
     "byMonth": "Mois par mois",
     "byMonthHelp": "Les 12 derniers mois. Bénéfice net = bénéfice brut − dépenses. Cliquez sur un mois pour voir le détail.",
-    "monthColumn": "Mois"
+    "monthColumn": "Mois",
+    "export": {
+      "excel": "Excel",
+      "pdf": "PDF",
+      "reportTitle": "Rapport de gestion",
+      "exportedBy": "Exporté par {name} le {date}",
+      "keyFigures": "Chiffres clés",
+      "sheetSummary": "Résumé",
+      "sheetSales": "Ventes",
+      "sheetExpenses": "Dépenses",
+      "sheetProducts": "Produits vendus",
+      "sheetMonths": "Mois par mois",
+      "channel": "Canal",
+      "paid": "Payé",
+      "status": "Statut",
+      "completed": "Validée",
+      "unit": "Unité",
+      "page": "Page {n} / {total}"
+    }
   },
   "staff": {
     "title": "Personnel",
