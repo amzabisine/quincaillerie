@@ -36,7 +36,7 @@ Next.js 16, React 19, TypeScript, Tailwind CSS 4, Supabase (PostgreSQL, Auth, St
 1. Log in as owner, open **Settings**, and check the shop name, phone, WhatsApp, NIF / RCCM, and the merchant codes for M-Pesa, Orange Money, Airtel Money (only methods with a code appear in the online store).
 2. Add staff accounts in **Staff**.
 3. Add products in **Products** (with every selling unit and price), then enter the current quantities in **Stock** using "Physical count" or "Stock in".
-4. Delete the demo accounts and data before going live if you used the seed.
+4. Before going live, clear the demo and test data: in Supabase > SQL Editor run `supabase/scripts/reset_1_preview.sql` (shows what will be removed), then `supabase/scripts/reset_2_delete.sql`. It removes all products, stock, customers, sales, orders, payments and expenses, and keeps staff accounts, categories and settings. Then delete the demo staff accounts in **Staff**.
 
 ## Project structure
 
