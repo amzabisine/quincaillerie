@@ -44,11 +44,25 @@ h1, h2, h3 { font-family: var(--font-display); font-stretch: 85%; letter-spacing
     var(--color-signal);
 }
 
+/* Scrollbars: grey bar on a dark track (staff menu) or on a light track (page) */
+.scroll-dark { scrollbar-width: auto; scrollbar-color: #9aa5b1 #2b2f33; scrollbar-gutter: stable; }
+.scroll-light { scrollbar-width: auto; scrollbar-color: #9aa5b1 var(--color-steel-50); scrollbar-gutter: stable; }
+/* Safari and older browsers */
+.scroll-dark::-webkit-scrollbar, .scroll-light::-webkit-scrollbar { width: 12px; }
+.scroll-dark::-webkit-scrollbar-track { background: #2b2f33; }
+.scroll-light::-webkit-scrollbar-track { background: var(--color-steel-50); }
+.scroll-dark::-webkit-scrollbar-thumb, .scroll-light::-webkit-scrollbar-thumb {
+  background: #9aa5b1; border-radius: 6px; border: 3px solid transparent; background-clip: padding-box;
+}
+.scroll-dark::-webkit-scrollbar-thumb:hover, .scroll-light::-webkit-scrollbar-thumb:hover { background-color: #c2cad2; }
+
 /* Receipts print on 58mm / 80mm thermal printers */
 @media print {
   body * { visibility: hidden; }
   .receipt, .receipt * { visibility: visible; }
   .receipt { position: absolute; inset: 0 auto auto 0; width: 76mm; padding: 0; box-shadow: none; font-size: 12px; }
   .no-print { display: none !important; }
+  /* the scrolling panels must not cut the receipt when printing */
+  .admin-shell, .admin-scroll { height: auto !important; overflow: visible !important; display: block !important; }
   @page { margin: 2mm; }
 }
